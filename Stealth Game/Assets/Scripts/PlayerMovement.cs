@@ -4,6 +4,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Player Movement")]
     [SerializeField] private float moveSpeed;
+    [SerializeField] private float maxSpeed;
     [SerializeField] private float drag;
 
     [Header("Camera Movement")]
@@ -11,10 +12,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float ySensitivity;
     [SerializeField] private Transform cameraHolder;
 
+    [Header("Model Alignment")]
+    [SerializeField] private Transform model;
+    [SerializeField] private float alignmentSpeed;
+
     private PlayerInputActions playerActions;
     private Rigidbody rb;
     private float xRotation;
     private float yRotation;
+    private Vector3 targetLerpPos;
 
     private void Awake()
     {
@@ -35,6 +41,8 @@ public class PlayerMovement : MonoBehaviour
     {
         Look(playerActions.Player.CameraMovement.ReadValue<Vector2>());
         Move(playerActions.Player.Movement.ReadValue<Vector2>());
+        LimitSpeed();
+        AlignModel();
     }
 
     private void Move(Vector2 direction)
@@ -55,6 +63,24 @@ public class PlayerMovement : MonoBehaviour
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
         cameraHolder.rotation = Quaternion.Euler(xRotation, yRotation, 0);
+        targetLerpPos = cameraHolder.rotation.eulerAngles + rb.velocity.normalized;
+    }
+
+    private void LimitSpeed()
+    {
+        Vector3 velocity = rb.velocity;
+        if(velocity.magnitude > maxSpeed)
+        {
+            Vector3 limitedVelocity = velocity.normalized * maxSpeed;
+            rb.velocity = limitedVelocity;
+        }
+    }
+
+    private void AlignModel()
+    {
+        //Adding "rb.velocity.magnitude * " to the speed multiplication will make it faster when the player is going fast and slow when the player is going slow
+        //This doesn't quite feel right but feel free to experiment
+        model.rotation = Quaternion.Slerp(model.rotation, Quaternion.Euler(targetLerpPos), alignmentSpeed * Time.deltaTime);
     }
 
     private void OnEnable()
