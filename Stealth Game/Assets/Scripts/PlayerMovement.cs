@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed;
     [SerializeField] private float maxSpeed;
     [SerializeField] private float drag;
+    [SerializeField] private float ascendDescendSpeed;
 
     [Header("Camera Movement")]
     [SerializeField] private float xSensitivity;
@@ -52,6 +53,8 @@ public class PlayerMovement : MonoBehaviour
     private void Move(Vector2 direction)
     {
         Vector3 moveDirection = cameraHolder.forward * direction.y + cameraHolder.right * direction.x;
+        float ascendDescendAmount = playerActions.Player.AscendDescend.ReadValue<float>() * ascendDescendSpeed;
+        moveDirection = new Vector3(moveDirection.x, moveDirection.y + ascendDescendAmount, moveDirection.z);
 
         rb.AddForce(moveDirection.normalized * moveSpeed * Time.deltaTime * 10f, ForceMode.Force);
     }
