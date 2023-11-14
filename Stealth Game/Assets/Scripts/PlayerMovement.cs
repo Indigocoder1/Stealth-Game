@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed;
     [SerializeField] private float maxSpeed;
     [SerializeField] private float drag;
+    [SerializeField] private float ascendDescendSpeed;
 
     [Header("Camera Movement")]
     [SerializeField] private float xSensitivity;
@@ -21,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
     private float xRotation;
     private float yRotation;
     private Vector3 targetLerpPos;
+    private bool movementLocked = false;
 
     private void Awake()
     {
@@ -39,15 +41,20 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        Look(playerActions.Player.CameraMovement.ReadValue<Vector2>());
-        Move(playerActions.Player.Movement.ReadValue<Vector2>());
-        LimitSpeed();
-        AlignModel();
+        if (!movementLocked)
+        {
+            Look(playerActions.Player.CameraMovement.ReadValue<Vector2>());
+            Move(playerActions.Player.Movement.ReadValue<Vector2>());
+            LimitSpeed();
+            AlignModel();
+        }
     }
 
     private void Move(Vector2 direction)
     {
         Vector3 moveDirection = cameraHolder.forward * direction.y + cameraHolder.right * direction.x;
+        float ascendDescendAmount = playerActions.Player.AscendDescend.ReadValue<float>() * ascendDescendSpeed;
+        moveDirection = new Vector3(moveDirection.x, moveDirection.y + ascendDescendAmount, moveDirection.z);
 
         rb.AddForce(moveDirection.normalized * moveSpeed * Time.deltaTime * 10f, ForceMode.Force);
     }
@@ -91,5 +98,10 @@ public class PlayerMovement : MonoBehaviour
     private void OnDisable()
     {
         playerActions.Disable();
+    }
+
+    public void setMovementLockState(bool lockState)
+    {
+        movementLocked = lockState;
     }
 }
