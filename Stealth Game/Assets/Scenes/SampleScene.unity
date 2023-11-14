@@ -760,16 +760,16 @@ MonoBehaviour:
   maxSpeed: 10
   airDrag: 2
   groundDrag: 4
-  ascendDescendSpeed: 1.5
-  minTimeSinceLastJump: 0.1
-  jumpForce: 25
+  ascendDescendSpeed: 7
+  minTimeSinceLastJump: 0.2
+  jumpForce: 20
   xSensitivity: 15
   ySensitivity: 20
   cameraHolder: {fileID: 1733625210}
   model: {fileID: 912968795}
   alignmentSpeed: 1.25
   gravityDirection: {x: 0, y: -1, z: 0}
-  gravityForce: 16
+  gravityForce: 10
 --- !u!1 &792011489
 GameObject:
   m_ObjectHideFlags: 0

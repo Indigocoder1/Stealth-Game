@@ -54,12 +54,12 @@ public class PlayerMovement : MonoBehaviour
         if (Physics.Raycast(transform.position, gravityDirection.normalized, groundedDistanceCheck))
         {
             grounded = true;
-            
+
         }
         else
         {
             grounded = false;
-            
+
         }
 
         Look(playerActions.Player.CameraMovement.ReadValue<Vector2>());
@@ -74,12 +74,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleGravity()
     {
-        if(grounded)
+        if (grounded)
         {
             return;
         }
 
-        if(gravityDirection.sqrMagnitude <= 0.01f)
+        if (gravityDirection.sqrMagnitude <= 0.01f)
         {
             usingGravity = false;
             return;
@@ -91,7 +91,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleDrag()
     {
-        if(grounded)
+        if (grounded)
         {
             rb.drag = groundDrag;
         }
@@ -104,7 +104,7 @@ public class PlayerMovement : MonoBehaviour
     private void Move(Vector2 direction)
     {
         Vector3 moveDirection = cameraHolder.forward * direction.y + cameraHolder.right * direction.x;
-        if(usingGravity)
+        if (usingGravity)
         {
             moveDirection.y = 0;
         }
@@ -129,7 +129,7 @@ public class PlayerMovement : MonoBehaviour
     private void LimitSpeed()
     {
         Vector3 velocity = rb.velocity;
-        if(velocity.magnitude > maxSpeed)
+        if (velocity.magnitude > maxSpeed)
         {
             Vector3 limitedVelocity = velocity.normalized * maxSpeed;
             rb.velocity = limitedVelocity;
@@ -139,7 +139,7 @@ public class PlayerMovement : MonoBehaviour
     private void AlignModel()
     {
         Quaternion targetRotation = Quaternion.identity;
-        if(usingGravity)
+        if (usingGravity)
         {
             targetRotation = Quaternion.Euler(0, targetLerpPos.y, 0);
         }
@@ -153,18 +153,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleJump()
     {
-        if(!grounded)
+        if (!grounded)
         {
             return;
         }
 
-        if(timeSinceLastJump < minTimeSinceLastJump)
+        if (timeSinceLastJump < minTimeSinceLastJump)
         {
             timeSinceLastJump += Time.deltaTime;
             return;
         }
 
-        if(playerActions.Player.AscendDescend.ReadValue<float>() > 0)
+        if (playerActions.Player.AscendDescend.ReadValue<float>() > 0)
         {
             rb.AddForce(-gravityDirection * jumpForce * 10f, ForceMode.Force);
         }
@@ -172,13 +172,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleAscendDescend()
     {
-        if(grounded)
+        if (grounded && usingGravity)
         {
             return;
         }
 
         float ascendDescendAmount = playerActions.Player.AscendDescend.ReadValue<float>();
-        rb.AddForce(new Vector3(0, ascendDescendAmount, 0) * ascendDescendAmount, ForceMode.Force);
+        rb.AddForce(new Vector3(0, ascendDescendAmount, 0) * ascendDescendSpeed * 200f * Time.deltaTime, ForceMode.Force);
     }
 
     private void OnEnable()

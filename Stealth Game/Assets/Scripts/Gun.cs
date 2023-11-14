@@ -42,7 +42,7 @@ public class Gun : MonoBehaviour
             return;
         }
 
-        switch(fireType)
+        switch (fireType)
         {
             case FireType.Projectile:
                 HandleProjectileFire();
@@ -51,7 +51,7 @@ public class Gun : MonoBehaviour
                 HandleHitscanFire();
                 break;
         }
-        
+
         //TODO - Recoil
         playerRigidbody.AddForce(-cameraTransform.forward * repulseForce * 10f, ForceMode.Force);
         timeSinceLastShot = 0;
@@ -62,7 +62,8 @@ public class Gun : MonoBehaviour
         GameObject bulletGameobject = Instantiate(bulletPrefab, bulletSpawnPosition.position, bulletSpawnPosition.rotation);
         bulletGameobject.transform.forward = -cameraTransform.forward;
         Rigidbody bulletRB = bulletGameobject.GetComponent<Rigidbody>();
-        bulletRB.velocity = playerRigidbody.velocity;
+        //bulletRB.velocity = playerRigidbody.velocity;
+        //Inherits player velocity ^
         bulletRB.AddForce(cameraTransform.forward * bulletSpeed);
 
         Destroy(bulletGameobject, maxBulletLifetime);
@@ -70,7 +71,7 @@ public class Gun : MonoBehaviour
 
     protected virtual void HandleHitscanFire()
     {
-        if(Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit hit, maxDistance, allowedHitMask))
+        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit hit, maxDistance, allowedHitMask))
         {
             HandleRaycastHit();
             onHitscanHit?.Invoke(this, EventArgs.Empty);
