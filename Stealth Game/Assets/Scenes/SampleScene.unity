@@ -629,7 +629,6 @@ MonoBehaviour:
   repulseForce: 18
   cameraTransform: {fileID: 1733625210}
   playerRigidbody: {fileID: 770277434}
-  fireType: 0
   bulletPrefab: {fileID: 2130804843781003409, guid: aae752e2e6c18c24d8943065f34937e9,
     type: 3}
   bulletSpawnPosition: {fileID: 426631818}
@@ -752,13 +751,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 200
   maxSpeed: 10
-  drag: 1
-  ascendDescendSpeed: 1.5
+  airDrag: 2
+  groundDrag: 4
+  ascendDescendSpeed: 7
+  minTimeSinceLastJump: 0.2
+  jumpForce: 20
   xSensitivity: 15
   ySensitivity: 20
   cameraHolder: {fileID: 1733625210}
   model: {fileID: 912968795}
   alignmentSpeed: 1.25
+  gravityDirection: {x: 0, y: -1, z: 0}
+  gravityForce: 10
 --- !u!1 &792011489
 GameObject:
   m_ObjectHideFlags: 0

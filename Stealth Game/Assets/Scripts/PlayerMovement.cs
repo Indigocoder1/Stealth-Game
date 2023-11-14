@@ -3,26 +3,36 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Player Movement")]
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float maxSpeed;
-    [SerializeField] private float drag;
-    [SerializeField] private float ascendDescendSpeed;
+    public float moveSpeed;
+    public float maxSpeed;
+    public float airDrag;
+    public float groundDrag;
+    public float ascendDescendSpeed;
+    public float minTimeSinceLastJump;
+    public float jumpForce;
 
     [Header("Camera Movement")]
-    [SerializeField] private float xSensitivity;
-    [SerializeField] private float ySensitivity;
-    [SerializeField] private Transform cameraHolder;
+    public float xSensitivity;
+    public float ySensitivity;
+    public Transform cameraHolder;
 
     [Header("Model Alignment")]
-    [SerializeField] private Transform model;
-    [SerializeField] private float alignmentSpeed;
+    public Transform model;
+    public float alignmentSpeed;
+
+    [Header("Gravity")]
+    public Vector3 gravityDirection;
+    public float gravityForce;
 
     private PlayerInputActions playerActions;
     private Rigidbody rb;
     private float xRotation;
     private float yRotation;
+    private float groundedDistanceCheck = 0.2f;
+    private float timeSinceLastJump;
     private Vector3 targetLerpPos;
-    private bool movementLocked = false;
+    private bool usingGravity;
+    private bool grounded;
 
     private void Awake()
     {
@@ -36,25 +46,68 @@ public class PlayerMovement : MonoBehaviour
 
         rb = GetComponent<Rigidbody>();
 
-        rb.drag = drag;
+        rb.drag = airDrag;
     }
 
     private void Update()
     {
-        if (!movementLocked)
+        if (Physics.Raycast(transform.position, gravityDirection.normalized, groundedDistanceCheck))
         {
-            Look(playerActions.Player.CameraMovement.ReadValue<Vector2>());
-            Move(playerActions.Player.Movement.ReadValue<Vector2>());
-            LimitSpeed();
-            AlignModel();
+            grounded = true;
+
+        }
+        else
+        {
+            grounded = false;
+
+        }
+
+        Look(playerActions.Player.CameraMovement.ReadValue<Vector2>());
+        Move(playerActions.Player.Movement.ReadValue<Vector2>());
+        HandleGravity();
+        HandleDrag();
+        HandleJump();
+        HandleAscendDescend();
+        LimitSpeed();
+        AlignModel();
+    }
+
+    private void HandleGravity()
+    {
+        if (grounded)
+        {
+            return;
+        }
+
+        if (gravityDirection.sqrMagnitude <= 0.01f)
+        {
+            usingGravity = false;
+            return;
+        }
+
+        rb.AddForce(gravityDirection.normalized * gravityForce, ForceMode.Acceleration);
+        usingGravity = true;
+    }
+
+    private void HandleDrag()
+    {
+        if (grounded)
+        {
+            rb.drag = groundDrag;
+        }
+        else
+        {
+            rb.drag = airDrag;
         }
     }
 
     private void Move(Vector2 direction)
     {
         Vector3 moveDirection = cameraHolder.forward * direction.y + cameraHolder.right * direction.x;
-        float ascendDescendAmount = playerActions.Player.AscendDescend.ReadValue<float>() * ascendDescendSpeed;
-        moveDirection = new Vector3(moveDirection.x, moveDirection.y + ascendDescendAmount, moveDirection.z);
+        if (usingGravity)
+        {
+            moveDirection.y = 0;
+        }
 
         rb.AddForce(moveDirection.normalized * moveSpeed * Time.deltaTime * 10f, ForceMode.Force);
     }
@@ -76,7 +129,7 @@ public class PlayerMovement : MonoBehaviour
     private void LimitSpeed()
     {
         Vector3 velocity = rb.velocity;
-        if(velocity.magnitude > maxSpeed)
+        if (velocity.magnitude > maxSpeed)
         {
             Vector3 limitedVelocity = velocity.normalized * maxSpeed;
             rb.velocity = limitedVelocity;
@@ -85,9 +138,47 @@ public class PlayerMovement : MonoBehaviour
 
     private void AlignModel()
     {
-        //Adding "rb.velocity.magnitude * " to the speed multiplication will make it faster when the player is going fast and slow when the player is going slow
-        //This doesn't quite feel right but feel free to experiment
-        model.rotation = Quaternion.Slerp(model.rotation, Quaternion.Euler(targetLerpPos), alignmentSpeed * Time.deltaTime);
+        Quaternion targetRotation = Quaternion.identity;
+        if (usingGravity)
+        {
+            targetRotation = Quaternion.Euler(0, targetLerpPos.y, 0);
+        }
+        else
+        {
+            targetRotation = Quaternion.Euler(targetLerpPos);
+        }
+
+        model.rotation = Quaternion.Slerp(model.rotation, targetRotation, alignmentSpeed * Time.deltaTime);
+    }
+
+    private void HandleJump()
+    {
+        if (!grounded)
+        {
+            return;
+        }
+
+        if (timeSinceLastJump < minTimeSinceLastJump)
+        {
+            timeSinceLastJump += Time.deltaTime;
+            return;
+        }
+
+        if (playerActions.Player.AscendDescend.ReadValue<float>() > 0)
+        {
+            rb.AddForce(-gravityDirection * jumpForce * 10f, ForceMode.Force);
+        }
+    }
+
+    private void HandleAscendDescend()
+    {
+        if (grounded && usingGravity)
+        {
+            return;
+        }
+
+        float ascendDescendAmount = playerActions.Player.AscendDescend.ReadValue<float>();
+        rb.AddForce(new Vector3(0, ascendDescendAmount, 0) * ascendDescendSpeed * 200f * Time.deltaTime, ForceMode.Force);
     }
 
     private void OnEnable()
@@ -98,10 +189,5 @@ public class PlayerMovement : MonoBehaviour
     private void OnDisable()
     {
         playerActions.Disable();
-    }
-
-    public void setMovementLockState(bool lockState)
-    {
-        movementLocked = lockState;
     }
 }
