@@ -4,21 +4,21 @@ using UnityEngine;
 public class Gun : MonoBehaviour
 {
     [Header("General")]
-    [SerializeField] private float timeBetweenShots;
-    [SerializeField] private float repulseForce;
-    [SerializeField] private Transform cameraTransform;
-    [SerializeField] private Rigidbody playerRigidbody;
-    [SerializeField] protected FireType fireType;
+    public float timeBetweenShots;
+    public float repulseForce;
+    public Transform cameraTransform;
+    public Rigidbody playerRigidbody;
+    protected FireType fireType;
 
     [Header("Projectile")]
-    [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private Transform bulletSpawnPosition;
-    [SerializeField] private float bulletSpeed;
-    [SerializeField] private float maxBulletLifetime;
+    public GameObject bulletPrefab;
+    public Transform bulletSpawnPosition;
+    public float bulletSpeed;
+    public float maxBulletLifetime;
 
     [Header("Hitscan")]
-    [SerializeField] private float maxDistance;
-    [SerializeField] private LayerMask allowedHitMask;
+    public float maxDistance;
+    public LayerMask allowedHitMask;
 
     private float timeSinceLastShot;
     private PlayerInputActions inputActions;
