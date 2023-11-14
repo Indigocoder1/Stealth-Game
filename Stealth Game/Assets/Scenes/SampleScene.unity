@@ -640,8 +640,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68ee25e4bf32e1b4baaa840fb6b7d59e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 200
-  maxSpeed: 10
+  moveSpeed: 50
+  maxSpeed: 6
+  ascendDescendSpeed: 40
   drag: 1
   xSensitivity: 10
   ySensitivity: 10

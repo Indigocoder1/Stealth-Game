@@ -5,6 +5,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Player Movement")]
     [SerializeField] private float moveSpeed;
     [SerializeField] private float maxSpeed;
+    [SerializeField] private float ascendDescendSpeed;
     [SerializeField] private float drag;
 
     [Header("Camera Movement")]
@@ -40,16 +41,19 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         Look(playerActions.Player.CameraMovement.ReadValue<Vector2>());
-        Move(playerActions.Player.Movement.ReadValue<Vector2>());
+        Vector2 direction = playerActions.Player.Movement.ReadValue<Vector2>();
+        float upDown = playerActions.Player.AscendDescend.ReadValue<float>();
+        Move(direction, upDown);
         LimitSpeed();
         AlignModel();
     }
 
-    private void Move(Vector2 direction)
+    private void Move(Vector2 direction, float verticalForce)
     {
         Vector3 moveDirection = cameraHolder.forward * direction.y + cameraHolder.right * direction.x;
-
-        rb.AddForce(moveDirection.normalized * moveSpeed * Time.deltaTime * 10f, ForceMode.Force);
+        moveDirection = new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);
+        
+        rb.AddForce(((moveDirection.normalized * moveSpeed) + new Vector3(0, verticalForce * ascendDescendSpeed, 0)) * Time.deltaTime * 10f, ForceMode.Force);
     }
 
     private void Look(Vector2 delta)
