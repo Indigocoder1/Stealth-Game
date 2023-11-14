@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     private float xRotation;
     private float yRotation;
     private Vector3 targetLerpPos;
+    private bool movementLocked = false;
 
     private void Awake()
     {
@@ -39,10 +40,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        Look(playerActions.Player.CameraMovement.ReadValue<Vector2>());
-        Move(playerActions.Player.Movement.ReadValue<Vector2>());
-        LimitSpeed();
-        AlignModel();
+        if (!movementLocked)
+        {
+            Look(playerActions.Player.CameraMovement.ReadValue<Vector2>());
+            Move(playerActions.Player.Movement.ReadValue<Vector2>());
+            LimitSpeed();
+            AlignModel();
+        }
     }
 
     private void Move(Vector2 direction)
@@ -91,5 +95,10 @@ public class PlayerMovement : MonoBehaviour
     private void OnDisable()
     {
         playerActions.Disable();
+    }
+
+    public void setMovementLockState(bool lockState)
+    {
+        movementLocked = lockState;
     }
 }
