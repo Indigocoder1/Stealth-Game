@@ -3,12 +3,6 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Player Movement")]
-<<<<<<< Updated upstream
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float maxSpeed;
-    [SerializeField] private float ascendDescendSpeed;
-    [SerializeField] private float drag;
-=======
     public float moveSpeed;
     public float maxSpeed;
     public float airDrag;
@@ -16,7 +10,6 @@ public class PlayerMovement : MonoBehaviour
     public float ascendDescendSpeed;
     public float minTimeSinceLastJump;
     public float jumpForce;
->>>>>>> Stashed changes
 
     [Header("Camera Movement")]
     public float xSensitivity;
@@ -24,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     public Transform cameraHolder;
 
     [Header("Model Alignment")]
-    [SerializeField] private Transform model;
+    public Transform model;
     public float alignmentSpeed;
 
     [Header("Gravity")]
@@ -38,11 +31,8 @@ public class PlayerMovement : MonoBehaviour
     private float groundedDistanceCheck = 0.2f;
     private float timeSinceLastJump;
     private Vector3 targetLerpPos;
-<<<<<<< Updated upstream
-=======
     private bool usingGravity;
     private bool grounded;
->>>>>>> Stashed changes
 
     private void Awake()
     {
@@ -61,14 +51,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-<<<<<<< Updated upstream
-        Look(playerActions.Player.CameraMovement.ReadValue<Vector2>());
-        Vector2 direction = playerActions.Player.Movement.ReadValue<Vector2>();
-        float upDown = playerActions.Player.AscendDescend.ReadValue<float>();
-        Move(direction, upDown);
-        LimitSpeed();
-        AlignModel();
-=======
         if (Physics.Raycast(transform.position, gravityDirection.normalized, groundedDistanceCheck))
         {
             grounded = true;
@@ -117,24 +99,17 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.drag = airDrag;
         }
->>>>>>> Stashed changes
     }
 
-    private void Move(Vector2 direction, float verticalForce)
+    private void Move(Vector2 direction)
     {
         Vector3 moveDirection = cameraHolder.forward * direction.y + cameraHolder.right * direction.x;
-<<<<<<< Updated upstream
-        moveDirection = new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);
-        
-        rb.AddForce(((moveDirection.normalized * moveSpeed) + new Vector3(0, verticalForce * ascendDescendSpeed, 0)) * Time.deltaTime * 10f, ForceMode.Force);
-=======
         if(usingGravity)
         {
             moveDirection.y = 0;
         }
 
         rb.AddForce(moveDirection.normalized * moveSpeed * Time.deltaTime * 10f, ForceMode.Force);
->>>>>>> Stashed changes
     }
 
     private void Look(Vector2 delta)

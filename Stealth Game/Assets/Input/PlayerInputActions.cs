@@ -53,6 +53,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Fire"",
+                    ""type"": ""Button"",
+                    ""id"": ""b914fb7f-809d-46c5-bdf7-f30e87423422"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -178,13 +187,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-<<<<<<< Updated upstream
-                    ""name"": ""Bumpers"",
-                    ""id"": ""928b0ae0-8074-4979-84e9-d3766ce4ee5d"",
-=======
                     ""name"": ""A/B"",
                     ""id"": ""6b663ebe-5fcf-40c2-8d6e-ab223e5c5935"",
->>>>>>> Stashed changes
                     ""path"": ""1DAxis"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -195,13 +199,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""negative"",
-<<<<<<< Updated upstream
-                    ""id"": ""349f5f51-04c6-4f6e-b09a-54692c989179"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
-=======
                     ""id"": ""81a636f2-1733-4383-88b9-a051f2dbc0d5"",
                     ""path"": ""<Gamepad>/buttonEast"",
->>>>>>> Stashed changes
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Controller"",
@@ -211,19 +210,36 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""positive"",
-<<<<<<< Updated upstream
-                    ""id"": ""dbe69705-810a-496f-af93-e76865875ae0"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
-=======
                     ""id"": ""256bb0c7-6edf-4184-ad98-4302474d7c4d"",
                     ""path"": ""<Gamepad>/buttonSouth"",
->>>>>>> Stashed changes
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Controller"",
                     ""action"": ""AscendDescend"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dd2ef212-92f2-4ebb-bf36-8bfe84fc81c4"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""813ed400-46d5-47b9-aea5-7c70c04ddc14"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -263,6 +279,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_CameraMovement = m_Player.FindAction("CameraMovement", throwIfNotFound: true);
         m_Player_AscendDescend = m_Player.FindAction("AscendDescend", throwIfNotFound: true);
+        m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -327,6 +344,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_CameraMovement;
     private readonly InputAction m_Player_AscendDescend;
+    private readonly InputAction m_Player_Fire;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -334,6 +352,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @CameraMovement => m_Wrapper.m_Player_CameraMovement;
         public InputAction @AscendDescend => m_Wrapper.m_Player_AscendDescend;
+        public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -352,6 +371,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @AscendDescend.started += instance.OnAscendDescend;
             @AscendDescend.performed += instance.OnAscendDescend;
             @AscendDescend.canceled += instance.OnAscendDescend;
+            @Fire.started += instance.OnFire;
+            @Fire.performed += instance.OnFire;
+            @Fire.canceled += instance.OnFire;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -365,6 +387,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @AscendDescend.started -= instance.OnAscendDescend;
             @AscendDescend.performed -= instance.OnAscendDescend;
             @AscendDescend.canceled -= instance.OnAscendDescend;
+            @Fire.started -= instance.OnFire;
+            @Fire.performed -= instance.OnFire;
+            @Fire.canceled -= instance.OnFire;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -405,5 +430,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnCameraMovement(InputAction.CallbackContext context);
         void OnAscendDescend(InputAction.CallbackContext context);
+        void OnFire(InputAction.CallbackContext context);
     }
 }

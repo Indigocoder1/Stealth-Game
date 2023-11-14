@@ -483,8 +483,6 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 1
-<<<<<<< Updated upstream
-=======
 --- !u!1 &426631817
 GameObject:
   m_ObjectHideFlags: 0
@@ -601,7 +599,6 @@ MonoBehaviour:
   allowedHitMask:
     serializedVersion: 2
     m_Bits: 0
->>>>>>> Stashed changes
 --- !u!1 &535875577
 GameObject:
   m_ObjectHideFlags: 0
@@ -759,14 +756,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68ee25e4bf32e1b4baaa840fb6b7d59e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< Updated upstream
-  moveSpeed: 50
-  maxSpeed: 6
-  ascendDescendSpeed: 40
-  drag: 1
-  xSensitivity: 10
-  ySensitivity: 10
-=======
   moveSpeed: 200
   maxSpeed: 10
   airDrag: 2
@@ -776,7 +765,6 @@ MonoBehaviour:
   jumpForce: 25
   xSensitivity: 15
   ySensitivity: 20
->>>>>>> Stashed changes
   cameraHolder: {fileID: 1733625210}
   model: {fileID: 912968795}
   alignmentSpeed: 1.25
