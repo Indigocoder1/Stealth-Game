@@ -28,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rb;
     private float xRotation;
     private float yRotation;
-    private float groundedDistanceCheck = 0.2f;
+    private float groundedDistanceCheck = 0.25f;
     private float timeSinceLastJump;
     private Vector3 targetLerpPos;
     private bool usingGravity;
@@ -172,7 +172,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleAscendDescend()
     {
-        if (grounded && usingGravity)
+        if (grounded || usingGravity)
         {
             return;
         }
