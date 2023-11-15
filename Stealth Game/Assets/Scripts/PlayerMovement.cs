@@ -62,6 +62,17 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+
         Look(playerActions.Player.CameraMovement.ReadValue<Vector2>());
         Move(playerActions.Player.Movement.ReadValue<Vector2>());
         HandleGravity();

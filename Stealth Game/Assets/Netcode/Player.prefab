@@ -1172,7 +1172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 0
+  GlobalObjectIdHash: 1671254445
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -1668,7 +1668,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 2130804843781003409, guid: aae752e2e6c18c24d8943065f34937e9,
     type: 3}
   bulletSpawnPosition: {fileID: 6974950923950765229}
-  bulletSpeed: 200
+  bulletSpeed: 1000
   maxBulletLifetime: 2
   maxDistance: 0
   allowedHitMask:
