@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &9081281580098099714
+--- !u!1001 &495030739326517413
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -11,7 +11,7 @@ PrefabInstance:
     - target: {fileID: 2125801013775030428, guid: f1482b13e49300c44b0ad30c23246b02,
         type: 3}
       propertyPath: m_Name
-      value: MultiplaterPlayer
+      value: SingleplayerPlayer
       objectReference: {fileID: 0}
     - target: {fileID: 5081106643109715674, guid: f1482b13e49300c44b0ad30c23246b02,
         type: 3}
@@ -66,35 +66,5 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2125801013775030428, guid: f1482b13e49300c44b0ad30c23246b02,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -1462175728349039640}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1482b13e49300c44b0ad30c23246b02, type: 3}
---- !u!1 &7171821573722227358 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2125801013775030428, guid: f1482b13e49300c44b0ad30c23246b02,
-    type: 3}
-  m_PrefabInstance: {fileID: 9081281580098099714}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &-1462175728349039640
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7171821573722227358}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 0
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
