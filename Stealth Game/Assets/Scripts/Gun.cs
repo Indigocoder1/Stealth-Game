@@ -15,6 +15,7 @@ public class Gun : MonoBehaviour
     public Transform bulletSpawnPosition;
     public float bulletSpeed;
     public float maxBulletLifetime;
+    public int bulletDamage;
 
     [Header("Hitscan")]
     public float maxDistance;
@@ -81,6 +82,7 @@ public class Gun : MonoBehaviour
     protected virtual void HandleRaycastHit()
     {
         //On hit stuff
+        this.GetComponent<HealthScript>().Damage(bulletDamage);
     }
 
     private void Update()

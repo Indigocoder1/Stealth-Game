@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2599152512619172118}
   - component: {fileID: 1326781993597536211}
   - component: {fileID: 9080472790626354475}
+  - component: {fileID: 6127140090603010231}
   m_Layer: 0
   m_Name: TaserBulletPrefab
   m_TagString: Untagged
@@ -148,3 +149,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09d33566c1573e24580f49c4f0ec1cfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6127140090603010231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2130804843781003409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
