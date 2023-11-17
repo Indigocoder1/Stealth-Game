@@ -5,10 +5,12 @@ public class Gun : MonoBehaviour
 {
     [Header("General")]
     public float timeBetweenShots;
-    public float repulseForce;
+    public float noGravityRepulseForce;
+    public float gravityRepulseForce;
     public Transform cameraTransform;
     public Rigidbody playerRigidbody;
-    protected FireType fireType;
+    public PlayerMovement playerMovement;
+    public FireType fireType;
 
     [Header("Projectile")]
     public GameObject bulletPrefab;
@@ -53,6 +55,8 @@ public class Gun : MonoBehaviour
         }
 
         //TODO - Recoil
+        bool inGravity = playerMovement.InGravity();
+        float repulseForce = inGravity ? gravityRepulseForce : noGravityRepulseForce;
         playerRigidbody.AddForce(-cameraTransform.forward * repulseForce * 10f, ForceMode.Force);
         timeSinceLastShot = 0;
     }
@@ -62,6 +66,7 @@ public class Gun : MonoBehaviour
         GameObject bulletGameobject = Instantiate(bulletPrefab, bulletSpawnPosition.position, bulletSpawnPosition.rotation);
         bulletGameobject.transform.forward = -cameraTransform.forward;
         Rigidbody bulletRB = bulletGameobject.GetComponent<Rigidbody>();
+        bulletGameobject.GetComponent<Bullet>().SetOwner(transform);
         //bulletRB.velocity = playerRigidbody.velocity;
         //Inherits player velocity ^
         bulletRB.AddForce(cameraTransform.forward * bulletSpeed);

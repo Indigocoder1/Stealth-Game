@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.Tilemaps;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -14,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Camera Movement")]
     public float xSensitivity;
     public float ySensitivity;
+    public float tiltSpeed;
     public Transform cameraHolder;
 
     [Header("Model Alignment")]
@@ -28,7 +31,8 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rb;
     private float xRotation;
     private float yRotation;
-    private float groundedDistanceCheck = 0.25f;
+    private float tilt;
+    private float groundedDistanceCheck = 0.1f;
     private float timeSinceLastJump;
     private Vector3 targetLerpPos;
     private bool usingGravity;
@@ -73,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
             Cursor.visible = false;
         }
 
-        Look(playerActions.Player.CameraMovement.ReadValue<Vector2>());
+        Look(playerActions.Player.CameraMovement.ReadValue<Vector2>(), playerActions.Player.Tilt.ReadValue<float>());
         Move(playerActions.Player.Movement.ReadValue<Vector2>());
         HandleGravity();
         HandleDrag();
@@ -90,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        if (gravityDirection.sqrMagnitude <= 0.01f)
+        if (!InGravity())
         {
             usingGravity = false;
             return;
@@ -123,17 +127,17 @@ public class PlayerMovement : MonoBehaviour
         rb.AddForce(moveDirection.normalized * moveSpeed * Time.deltaTime * 10f, ForceMode.Force);
     }
 
-    private void Look(Vector2 delta)
+    private void Look(Vector2 delta, float tiltAmount)
     {
         float mouseX = delta.x * Time.deltaTime * xSensitivity;
         float mouseY = delta.y * Time.deltaTime * ySensitivity;
 
         yRotation += mouseX;
         xRotation -= mouseY;
+        tilt = (tilt - tiltAmount * tiltSpeed) % 360;
+        xRotation = Mathf.Clamp(xRotation, -90, 90);
 
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-
-        cameraHolder.rotation = Quaternion.Euler(xRotation, yRotation, 0);
+        cameraHolder.Rotate(new Vector3(-mouseY, mouseX, -tiltAmount), Space.Self);
         targetLerpPos = cameraHolder.rotation.eulerAngles + rb.velocity.normalized;
     }
 
@@ -189,7 +193,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         float ascendDescendAmount = playerActions.Player.AscendDescend.ReadValue<float>();
-        rb.AddForce(new Vector3(0, ascendDescendAmount, 0) * ascendDescendSpeed * 200f * Time.deltaTime, ForceMode.Force);
+        rb.AddForce(cameraHolder.up * ascendDescendAmount * ascendDescendSpeed * 200f * Time.deltaTime, ForceMode.Force);
     }
 
     private void OnEnable()
@@ -200,5 +204,15 @@ public class PlayerMovement : MonoBehaviour
     private void OnDisable()
     {
         playerActions.Disable();
+    }
+
+    public bool IsGrounded()
+    {
+        return grounded;
+    }
+
+    public bool InGravity()
+    {
+        return gravityDirection.sqrMagnitude > 0.01f;
     }
 }
