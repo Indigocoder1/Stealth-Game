@@ -9,7 +9,7 @@ public class Gun : MonoBehaviour
     public float gravityRepulseForce;
     public Transform cameraTransform;
     public Rigidbody playerRigidbody;
-    public PlayerMovement playerMovement;
+    public Player player;
     public FireType fireType;
 
     [Header("Projectile")]
@@ -55,7 +55,7 @@ public class Gun : MonoBehaviour
         }
 
         //TODO - Recoil
-        bool inGravity = playerMovement.InGravity();
+        bool inGravity = player.InGravity();
         float repulseForce = inGravity ? gravityRepulseForce : noGravityRepulseForce;
         playerRigidbody.AddForce(-cameraTransform.forward * repulseForce * 10f, ForceMode.Force);
         timeSinceLastShot = 0;
