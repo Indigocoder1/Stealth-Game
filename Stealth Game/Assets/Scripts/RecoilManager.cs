@@ -13,11 +13,6 @@ public class RecoilManager : MonoBehaviour
         currentRotation = Vector3.Slerp(currentRotation, targetRotation, snappiness * Time.deltaTime);
         Vector3 rotationDelta = currentRotation - oldRotation;
         transform.rotation *= Quaternion.Euler(rotationDelta);
-
-        if(Input.GetKeyDown(KeyCode.X))
-        {
-            AddRecoil(-10f, 6f);
-        }
     }
 
     public void AddRecoil(float recoilX, float recoilY)

@@ -22,6 +22,13 @@ public class Gun : MonoBehaviour
     public float maxDistance;
     public LayerMask allowedHitMask;
 
+    [Header("Recoil")]
+    public RecoilManager recoilManager;
+    public float verticalRecoil;
+    public float horizontalRecoil;
+    [Range(0, 5f)]
+    public float horizontalRandomness;
+
     private float timeSinceLastShot;
     private PlayerInputActions inputActions;
     protected event EventHandler onHitscanHit;
@@ -54,7 +61,9 @@ public class Gun : MonoBehaviour
                 break;
         }
 
-        //TODO - Recoil
+
+        recoilManager.AddRecoil(-verticalRecoil, horizontalRecoil + UnityEngine.Random.Range(-horizontalRandomness, horizontalRandomness));
+
         bool inGravity = player.InGravity();
         float repulseForce = inGravity ? gravityRepulseForce : noGravityRepulseForce;
         playerRigidbody.AddForce(-cameraTransform.forward * repulseForce * 10f, ForceMode.Force);
