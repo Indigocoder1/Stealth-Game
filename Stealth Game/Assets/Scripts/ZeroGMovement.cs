@@ -17,7 +17,6 @@ public class ZeroGMovement : MonoBehaviour
     public float cameraSmoothSpeed;
     public float tiltSpeed;
     public Transform cameraHolder;
-    public Transform orientation;
 
     [Header("Model Alignment")]
     public Transform model;
@@ -73,15 +72,18 @@ public class ZeroGMovement : MonoBehaviour
 
     private void Look(Vector2 delta)
     {
+        //Mouse rotation
         float mouseX = delta.x * Time.deltaTime * xSensitivity;
         float mouseY = delta.y * Time.deltaTime * ySensitivity;
 
         xRotation -= mouseY;
         yRotation += mouseX;
 
+        //Tilt
         float tiltAmount = playerActions.Player.Tilt.ReadValue<float>();
-        cameraHolder.Rotate(new Vector3(-mouseY, mouseX, -tiltAmount * tiltSpeed), Space.Self);
+        tilt -= tiltAmount * tiltSpeed;
 
+        cameraHolder.rotation *= Quaternion.Euler(-mouseY, mouseX, -tiltAmount * tiltSpeed);
         targetLerpPos = cameraHolder.rotation.eulerAngles + rb.velocity.normalized;
     }
     

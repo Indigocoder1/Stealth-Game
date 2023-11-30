@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RecoilManager : MonoBehaviour
 {
-    public float returnSpeed;
     public float snappiness;
 
     private Vector3 currentRotation;
@@ -12,7 +9,6 @@ public class RecoilManager : MonoBehaviour
 
     private void Update()
     {
-        targetRotation = Vector3.Lerp(targetRotation, Vector3.zero, returnSpeed * Time.deltaTime);
         Vector3 oldRotation = currentRotation;
         currentRotation = Vector3.Slerp(currentRotation, targetRotation, snappiness * Time.deltaTime);
         Vector3 rotationDelta = currentRotation - oldRotation;
