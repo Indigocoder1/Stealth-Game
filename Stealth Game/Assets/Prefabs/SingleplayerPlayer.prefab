@@ -311,7 +311,7 @@ MonoBehaviour:
   xSensitivity: 15
   ySensitivity: 20
   cameraSmoothSpeed: 0
-  tiltSpeed: 2
+  tiltSpeed: 1
   cameraHolder: {fileID: 2040377096604238070}
   model: {fileID: 5057710651989148089}
   alignmentSpeed: 1.4
