@@ -5,10 +5,12 @@ public class Gun : MonoBehaviour
 {
     [Header("General")]
     public float timeBetweenShots;
-    public float repulseForce;
+    public float noGravityRepulseForce;
+    public float gravityRepulseForce;
     public Transform cameraTransform;
     public Rigidbody playerRigidbody;
-    protected FireType fireType;
+    public Player player;
+    public FireType fireType;
 
     [Header("Projectile")]
     public GameObject bulletPrefab;
@@ -19,6 +21,13 @@ public class Gun : MonoBehaviour
     [Header("Hitscan")]
     public float maxDistance;
     public LayerMask allowedHitMask;
+
+    [Header("Recoil")]
+    public RecoilManager recoilManager;
+    public float verticalRecoil;
+    public float horizontalRecoil;
+    [Range(0, 5f)]
+    public float horizontalRandomness;
 
     private float timeSinceLastShot;
     private PlayerInputActions inputActions;
@@ -52,7 +61,11 @@ public class Gun : MonoBehaviour
                 break;
         }
 
-        //TODO - Recoil
+
+        recoilManager.AddRecoil(-verticalRecoil, horizontalRecoil + UnityEngine.Random.Range(-horizontalRandomness, horizontalRandomness));
+
+        bool inGravity = player.InGravity();
+        float repulseForce = inGravity ? gravityRepulseForce : noGravityRepulseForce;
         playerRigidbody.AddForce(-cameraTransform.forward * repulseForce * 10f, ForceMode.Force);
         timeSinceLastShot = 0;
     }
@@ -62,6 +75,7 @@ public class Gun : MonoBehaviour
         GameObject bulletGameobject = Instantiate(bulletPrefab, bulletSpawnPosition.position, bulletSpawnPosition.rotation);
         bulletGameobject.transform.forward = -cameraTransform.forward;
         Rigidbody bulletRB = bulletGameobject.GetComponent<Rigidbody>();
+        bulletGameobject.GetComponent<Bullet>().SetOwner(transform);
         //bulletRB.velocity = playerRigidbody.velocity;
         //Inherits player velocity ^
         bulletRB.AddForce(cameraTransform.forward * bulletSpeed);
