@@ -3,35 +3,48 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthScript : MonoBehaviour
+public class HealthScript : MonoBehaviour, IDamageable
 {
     [SerializeField] private int health = 100;
-    [SerializeField] private Text healthP;
-    public float Damage(int damageAmount)
+    [SerializeField] private Slider healthBar;
+    [SerializeField] private Image healthImage;
+    [SerializeField] Gradient healthColor;
+
+    private int currentHealth;
+
+    private void Start()
     {
-        health -= damageAmount;
+        currentHealth = health;
 
+        healthBar.maxValue = 1;
+        healthBar.minValue = 0;
 
-        if (health < 25)
+        float normalizedHealth = (float)currentHealth / health;
+        healthImage.color = healthColor.Evaluate(normalizedHealth);
+        healthBar.value = normalizedHealth;
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.O))
         {
-            healthP.color = Color.red;
+            Damage(10);
         }
-        else if (health < 50)
-        {
-            healthP.color = new Color(255, 182, 0);
-        }
-        else if (health < 75)
-        {
-            healthP.color = new Color(255, 200, 0);
-        }
+    }
 
-        for (int i = 0; i < health/4; i++)
-        {
-            healthP.text = healthP.text + "|";
-        }
+    public void Damage(int damageAmount)
+    {
+        currentHealth -= damageAmount;
+        float normalizedHealth = (float)currentHealth / health;
 
-        Debug.Log(health);
+        healthImage.color = healthColor.Evaluate(normalizedHealth);
+        healthBar.value = normalizedHealth;
 
-        return health;
+        Debug.Log(normalizedHealth);
+    }
+
+    public int GetHealth()
+    {
+        return currentHealth;
     }
 }

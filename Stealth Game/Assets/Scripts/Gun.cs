@@ -1,7 +1,5 @@
 using System;
 using System.Collections;
-using UnityEditor.Rendering;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class Gun : MonoBehaviour
@@ -11,7 +9,9 @@ public class Gun : MonoBehaviour
     public float repulseForce;
     public Transform cameraTransform;
     public Rigidbody playerRigidbody;
-    protected FireType fireType;
+    public FireType fireType;
+    [SerializeField]
+    protected int bulletDamage;
 
     [Header("Projectile")]
     public GameObject bulletPrefab;
@@ -21,9 +21,9 @@ public class Gun : MonoBehaviour
 
     [Header("Hitscan")]
     public LayerMask allowedHitMask;
-
+    [SerializeField]
     protected float maxDistance;
-    protected int bulletDamage;
+
     private float timeSinceLastShot;
     private PlayerInputActions inputActions;
     protected event EventHandler onHitscanHit;
@@ -66,8 +66,6 @@ public class Gun : MonoBehaviour
         GameObject bulletGameobject = Instantiate(bulletPrefab, bulletSpawnPosition.position, bulletSpawnPosition.rotation);
         bulletGameobject.transform.forward = -cameraTransform.forward;
         Rigidbody bulletRB = bulletGameobject.GetComponent<Rigidbody>();
-        //bulletRB.velocity = playerRigidbody.velocity;
-        //Inherits player velocity ^
         bulletRB.AddForce(cameraTransform.forward * bulletSpeed);
 
         Destroy(bulletGameobject, maxBulletLifetime);
@@ -77,11 +75,12 @@ public class Gun : MonoBehaviour
     {
         if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit hit, maxDistance, allowedHitMask))
         {
-            HandleRaycastHit();
+            HandleRaycastHit(hit);
             onHitscanHit?.Invoke(this, EventArgs.Empty);
         }
-        // graphics
 
+        /*Old stuff:
+        //graphics
         GameObject bulletGameobject = Instantiate(bulletPrefab, bulletSpawnPosition.position, bulletSpawnPosition.rotation);
         bulletGameobject.transform.forward = -cameraTransform.forward;
 
@@ -94,19 +93,19 @@ public class Gun : MonoBehaviour
         {
             bulletGameobject.transform.localScale = new Vector3(1, 1, 10);
         }
-        StartCoroutine(RemoveGameObject(bulletGameobject, 0.7f));
+
+        Destroy(bulletGameobject, 0.7f);
+        */
     }
 
-    protected virtual void HandleRaycastHit()
+    protected virtual void HandleRaycastHit(RaycastHit hitInfo)
     {
         //On hit stuff
-        this.GetComponent<HealthScript>().Damage(bulletDamage);
-    }
-
-    private IEnumerator RemoveGameObject(GameObject gameObject, float time)
-    {
-        yield return new WaitForSeconds(time);
-        Destroy(gameObject);
+        IDamageable damageable = hitInfo.collider.GetComponentInParent<IDamageable>();
+        if(damageable != null)
+        {
+            damageable.Damage(bulletDamage);
+        }
     }
 
     private void Update()
@@ -130,6 +129,6 @@ public class Gun : MonoBehaviour
 
 public enum FireType
 {
-    Hitscan,
-    Projectile
+    Projectile,
+    Hitscan
 }

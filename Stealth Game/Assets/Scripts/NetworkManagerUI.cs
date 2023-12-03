@@ -11,7 +11,6 @@ public class NewBehaviourScript : MonoBehaviour
     [SerializeField] private Button hostBtn;
     [SerializeField] private Button clientBtn;
     [SerializeField] private GameObject NetworkManagerUI;
-    [SerializeField] private GameObject HealthUI;
 
     private void Awake()
     {
@@ -35,6 +34,5 @@ public class NewBehaviourScript : MonoBehaviour
     private void defaultOnClick()
     {
         NetworkManagerUI.SetActive(false);
-        HealthUI.SetActive(true);
     }
 }
