@@ -80,10 +80,10 @@ public class ZeroGMovement : MonoBehaviour
         yRotation += mouseX;
 
         //Tilt
-        float tiltAmount = playerActions.Player.Tilt.ReadValue<float>();
-        tilt -= tiltAmount * tiltSpeed;
+        float tiltAmount = playerActions.Player.Tilt.ReadValue<float>() * Time.deltaTime * tiltSpeed;
+        tilt -= tiltAmount;
 
-        cameraHolder.rotation *= Quaternion.Euler(-mouseY, mouseX, -tiltAmount * tiltSpeed);
+        cameraHolder.rotation *= Quaternion.Euler(-mouseY, mouseX, -tiltAmount);
         targetLerpPos = cameraHolder.rotation.eulerAngles + rb.velocity.normalized;
     }
     

@@ -2,15 +2,17 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    private Transform owner;
+    private Gun owner;
 
-    public void SetOwner(Transform owner)
+    public void SetOwner(Gun owner)
     {
         this.owner = owner;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        owner.RemoveActiveBullet(this);
+
         if (collision.gameObject.tag == "Player")
         {
             //decrease health and stuff

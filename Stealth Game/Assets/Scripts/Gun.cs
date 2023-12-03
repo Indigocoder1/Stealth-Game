@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Gun : MonoBehaviour
@@ -32,6 +33,7 @@ public class Gun : MonoBehaviour
     private float timeSinceLastShot;
     private PlayerInputActions inputActions;
     protected event EventHandler onHitscanHit;
+    protected List<Bullet> activeBullets = new List<Bullet>();
 
     private void Awake()
     {
@@ -75,9 +77,14 @@ public class Gun : MonoBehaviour
         GameObject bulletGameobject = Instantiate(bulletPrefab, bulletSpawnPosition.position, bulletSpawnPosition.rotation);
         bulletGameobject.transform.forward = -cameraTransform.forward;
         Rigidbody bulletRB = bulletGameobject.GetComponent<Rigidbody>();
-        bulletGameobject.GetComponent<Bullet>().SetOwner(transform);
+
+        Bullet bullet = bulletGameobject.GetComponent<Bullet>();
+        bullet.SetOwner(this);
+        activeBullets.Add(bullet);
+
         //bulletRB.velocity = playerRigidbody.velocity;
         //Inherits player velocity ^
+
         bulletRB.AddForce(cameraTransform.forward * bulletSpeed);
 
         Destroy(bulletGameobject, maxBulletLifetime);
@@ -97,7 +104,12 @@ public class Gun : MonoBehaviour
         //On hit stuff
     }
 
-    private void Update()
+    public void RemoveActiveBullet(Bullet bullet)
+    {
+        activeBullets.Remove(bullet);
+    }
+
+    protected virtual void Update()
     {
         if (timeSinceLastShot < timeBetweenShots)
         {
