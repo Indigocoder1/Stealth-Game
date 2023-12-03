@@ -1765,8 +1765,8 @@ MonoBehaviour:
   serverBtn: {fileID: 730769972}
   hostBtn: {fileID: 871263448}
   clientBtn: {fileID: 207147542}
-  NetworkManagerUI: {fileID: 0}
-  HealthUI: {fileID: 0}
+  NetworkManagerUI: {fileID: 1546513616}
+  HealthUI: {fileID: 1419859865}
 --- !u!1 &1608630202
 GameObject:
   m_ObjectHideFlags: 0

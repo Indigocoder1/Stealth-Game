@@ -15,6 +15,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2228009347314766795, guid: f1482b13e49300c44b0ad30c23246b02,
         type: 3}
+      propertyPath: bulletPrefab
+      value: 
+      objectReference: {fileID: 8460305793305334354, guid: 6833bff74ac277f41a07f86ce47fe6e5,
+        type: 3}
+    - target: {fileID: 2228009347314766795, guid: f1482b13e49300c44b0ad30c23246b02,
+        type: 3}
       propertyPath: allowedHitMask.m_Bits
       value: 8
       objectReference: {fileID: 0}
@@ -105,7 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2073831431
+  GlobalObjectIdHash: 675450159
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0

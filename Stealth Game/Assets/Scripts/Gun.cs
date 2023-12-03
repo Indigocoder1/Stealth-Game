@@ -1,4 +1,7 @@
 using System;
+using System.Collections;
+using UnityEditor.Rendering;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class Gun : MonoBehaviour
@@ -15,12 +18,12 @@ public class Gun : MonoBehaviour
     public Transform bulletSpawnPosition;
     public float bulletSpeed;
     public float maxBulletLifetime;
-    public int bulletDamage;
 
     [Header("Hitscan")]
-    public float maxDistance;
     public LayerMask allowedHitMask;
 
+    protected float maxDistance;
+    protected int bulletDamage;
     private float timeSinceLastShot;
     private PlayerInputActions inputActions;
     protected event EventHandler onHitscanHit;
@@ -77,12 +80,33 @@ public class Gun : MonoBehaviour
             HandleRaycastHit();
             onHitscanHit?.Invoke(this, EventArgs.Empty);
         }
+        // graphics
+
+        GameObject bulletGameobject = Instantiate(bulletPrefab, bulletSpawnPosition.position, bulletSpawnPosition.rotation);
+        bulletGameobject.transform.forward = -cameraTransform.forward;
+
+        // check if hit anything
+        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit hit1, maxDistance, ~0))
+        {
+            bulletGameobject.transform.localScale = new Vector3(1, 1, hit1.distance);
+        }
+        else
+        {
+            bulletGameobject.transform.localScale = new Vector3(1, 1, 10);
+        }
+        StartCoroutine(RemoveGameObject(bulletGameobject, 0.7f));
     }
 
     protected virtual void HandleRaycastHit()
     {
         //On hit stuff
         this.GetComponent<HealthScript>().Damage(bulletDamage);
+    }
+
+    private IEnumerator RemoveGameObject(GameObject gameObject, float time)
+    {
+        yield return new WaitForSeconds(time);
+        Destroy(gameObject);
     }
 
     private void Update()
@@ -106,6 +130,6 @@ public class Gun : MonoBehaviour
 
 public enum FireType
 {
-    Projectile,
-    Hitscan
+    Hitscan,
+    Projectile
 }

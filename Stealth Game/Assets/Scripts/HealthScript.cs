@@ -30,6 +30,8 @@ public class HealthScript : MonoBehaviour
             healthP.text = healthP.text + "|";
         }
 
+        Debug.Log(health);
+
         return health;
     }
 }
