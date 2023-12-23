@@ -55,6 +55,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""Tilt"",
+                    ""type"": ""Value"",
+                    ""id"": ""87a77271-9edb-44ae-a8ad-7e8e79015c29"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""Fire"",
                     ""type"": ""Button"",
                     ""id"": ""b914fb7f-809d-46c5-bdf7-f30e87423422"",
@@ -240,6 +249,72 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Fire"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""QE"",
+                    ""id"": ""7babfc20-732c-4479-92cf-9931c76e6184"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tilt"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""792f229a-692f-43c2-b178-c7bd7dcba53f"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""Tilt"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""6b050664-7940-42cd-b0bb-db453f114cf9"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""Tilt"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Bumpers"",
+                    ""id"": ""b01a3303-d684-4c78-a9f3-9d9b4d5d2b97"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tilt"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""c48432e9-9382-4cff-b5b7-74e9bea27589"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Tilt"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""56005c15-4c42-413a-9d6c-6c00cc0480e3"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Tilt"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -279,6 +354,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_CameraMovement = m_Player.FindAction("CameraMovement", throwIfNotFound: true);
         m_Player_AscendDescend = m_Player.FindAction("AscendDescend", throwIfNotFound: true);
+        m_Player_Tilt = m_Player.FindAction("Tilt", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
     }
 
@@ -344,6 +420,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_CameraMovement;
     private readonly InputAction m_Player_AscendDescend;
+    private readonly InputAction m_Player_Tilt;
     private readonly InputAction m_Player_Fire;
     public struct PlayerActions
     {
@@ -352,6 +429,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @CameraMovement => m_Wrapper.m_Player_CameraMovement;
         public InputAction @AscendDescend => m_Wrapper.m_Player_AscendDescend;
+        public InputAction @Tilt => m_Wrapper.m_Player_Tilt;
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
@@ -371,6 +449,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @AscendDescend.started += instance.OnAscendDescend;
             @AscendDescend.performed += instance.OnAscendDescend;
             @AscendDescend.canceled += instance.OnAscendDescend;
+            @Tilt.started += instance.OnTilt;
+            @Tilt.performed += instance.OnTilt;
+            @Tilt.canceled += instance.OnTilt;
             @Fire.started += instance.OnFire;
             @Fire.performed += instance.OnFire;
             @Fire.canceled += instance.OnFire;
@@ -387,6 +468,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @AscendDescend.started -= instance.OnAscendDescend;
             @AscendDescend.performed -= instance.OnAscendDescend;
             @AscendDescend.canceled -= instance.OnAscendDescend;
+            @Tilt.started -= instance.OnTilt;
+            @Tilt.performed -= instance.OnTilt;
+            @Tilt.canceled -= instance.OnTilt;
             @Fire.started -= instance.OnFire;
             @Fire.performed -= instance.OnFire;
             @Fire.canceled -= instance.OnFire;
@@ -430,6 +514,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnCameraMovement(InputAction.CallbackContext context);
         void OnAscendDescend(InputAction.CallbackContext context);
+        void OnTilt(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
     }
 }
