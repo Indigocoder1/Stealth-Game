@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3488414759535749759}
   - component: {fileID: 2599152512619172118}
   - component: {fileID: 1326781993597536211}
-  - component: {fileID: 9080472790626354475}
+  - component: {fileID: 7957585107906439635}
   m_Layer: 0
   m_Name: TaserBulletPrefab
   m_TagString: Untagged
@@ -136,7 +136,7 @@ CapsuleCollider:
   m_Height: 0.32
   m_Direction: 2
   m_Center: {x: -0.0000038612634, y: 0.0000022053719, z: -0.056284666}
---- !u!114 &9080472790626354475
+--- !u!114 &7957585107906439635
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -145,6 +145,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2130804843781003409}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09d33566c1573e24580f49c4f0ec1cfe, type: 3}
+  m_Script: {fileID: 11500000, guid: 1c4d9747852fb0c4f9f464cbfba1e05b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destroyTime: 1

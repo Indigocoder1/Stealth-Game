@@ -609,6 +609,10 @@ MonoBehaviour:
   horizontalRecoil: 0.3
   horizontalRandomness: 0.18
   lineFX: {fileID: 7694073073807264197}
+  ropeLightningPrefab: {fileID: 37375509638552733, guid: bd8137bf75d52fe459ec7292e3d85360,
+    type: 3}
+  impactLightningPrefab: {fileID: 37375509638552733, guid: a8378d5ee98b4764a9c6c0355b7ad819,
+    type: 3}
 --- !u!114 &7694073073807264197
 MonoBehaviour:
   m_ObjectHideFlags: 0
