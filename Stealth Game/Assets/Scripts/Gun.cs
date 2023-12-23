@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class Gun : MonoBehaviour
@@ -9,8 +10,9 @@ public class Gun : MonoBehaviour
     public float gravityRepulseForce;
     public Transform cameraTransform;
     public Rigidbody playerRigidbody;
-    public Player player;
     public FireType fireType;
+    [SerializeField]
+    protected int bulletDamage;
 
     [Header("Projectile")]
     public GameObject bulletPrefab;
@@ -19,8 +21,9 @@ public class Gun : MonoBehaviour
     public float maxBulletLifetime;
 
     [Header("Hitscan")]
-    public float maxDistance;
     public LayerMask allowedHitMask;
+    [SerializeField]
+    protected float maxDistance;
 
     [Header("Recoil")]
     public RecoilManager recoilManager;
@@ -87,14 +90,37 @@ public class Gun : MonoBehaviour
     {
         if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit hit, maxDistance, allowedHitMask))
         {
-            HandleRaycastHit();
+            HandleRaycastHit(hit);
             onHitscanHit?.Invoke(this, EventArgs.Empty);
         }
+
+        /*Old stuff:
+        //graphics
+        GameObject bulletGameobject = Instantiate(bulletPrefab, bulletSpawnPosition.position, bulletSpawnPosition.rotation);
+        bulletGameobject.transform.forward = -cameraTransform.forward;
+
+        // check if hit anything
+        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit hit1, maxDistance, ~0))
+        {
+            bulletGameobject.transform.localScale = new Vector3(1, 1, hit1.distance);
+        }
+        else
+        {
+            bulletGameobject.transform.localScale = new Vector3(1, 1, 10);
+        }
+
+        Destroy(bulletGameobject, 0.7f);
+        */
     }
 
-    protected virtual void HandleRaycastHit()
+    protected virtual void HandleRaycastHit(RaycastHit hitInfo)
     {
         //On hit stuff
+        IDamageable damageable = hitInfo.collider.GetComponentInParent<IDamageable>();
+        if(damageable != null)
+        {
+            damageable.Damage(bulletDamage);
+        }
     }
 
     private void Update()

@@ -10,20 +10,29 @@ public class NewBehaviourScript : MonoBehaviour
     [SerializeField] private Button serverBtn;
     [SerializeField] private Button hostBtn;
     [SerializeField] private Button clientBtn;
+    [SerializeField] private GameObject NetworkManagerUI;
 
     private void Awake()
     {
         serverBtn.onClick.AddListener(() =>
         {
             NetworkManager.Singleton.StartServer();
+            defaultOnClick();
         });
         hostBtn.onClick.AddListener(() =>
         {
             NetworkManager.Singleton.StartHost();
+            defaultOnClick();
         });
         clientBtn.onClick.AddListener(() =>
         {
             NetworkManager.Singleton.StartClient();
+            defaultOnClick();
         });
+    }
+
+    private void defaultOnClick()
+    {
+        NetworkManagerUI.SetActive(false);
     }
 }
