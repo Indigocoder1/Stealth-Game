@@ -91,7 +91,8 @@ public class Gun : MonoBehaviour
         {
             onHitscanHit?.Invoke(this, EventArgs.Empty);
 
-            if(hit.collider.TryGetComponent(out IDamageable damageable))
+            IDamageable damageable = hit.collider.GetComponentInParent<IDamageable>();
+            if (damageable != null)
             {
                 damageable.Damage(shotDamage);
             }
