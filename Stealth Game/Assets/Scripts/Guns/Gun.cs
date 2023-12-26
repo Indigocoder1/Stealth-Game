@@ -7,6 +7,7 @@ public class Gun : MonoBehaviour
     public float timeBetweenShots;
     public float noGravityRepulseForce;
     public float gravityRepulseForce;
+    public int shotDamage;
     public Transform cameraTransform;
     public Rigidbody playerRigidbody;
     public Player player;
@@ -75,10 +76,11 @@ public class Gun : MonoBehaviour
         GameObject bulletGameobject = Instantiate(bulletPrefab, bulletSpawnPosition.position, bulletSpawnPosition.rotation);
         bulletGameobject.transform.forward = -cameraTransform.forward;
         Rigidbody bulletRB = bulletGameobject.GetComponent<Rigidbody>();
-        bulletGameobject.GetComponent<Bullet>().SetOwner(transform);
-        //bulletRB.velocity = playerRigidbody.velocity;
-        //Inherits player velocity ^
         bulletRB.AddForce(cameraTransform.forward * bulletSpeed);
+
+        Bullet bullet = bulletGameobject.GetComponent<Bullet>();
+        bullet.SetOwner(transform);
+        bullet.SetDamage(shotDamage);
 
         Destroy(bulletGameobject, maxBulletLifetime);
     }
@@ -87,14 +89,14 @@ public class Gun : MonoBehaviour
     {
         if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit hit, maxDistance, allowedHitMask))
         {
-            HandleRaycastHit();
             onHitscanHit?.Invoke(this, EventArgs.Empty);
-        }
-    }
 
-    protected virtual void HandleRaycastHit()
-    {
-        //On hit stuff
+            IDamageable damageable = hit.collider.GetComponentInParent<IDamageable>();
+            if (damageable != null)
+            {
+                damageable.Damage(shotDamage);
+            }
+        }
     }
 
     private void Update()
