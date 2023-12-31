@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using Photon.Pun;
+using Unity.VisualScripting;
 
 public class Gun : MonoBehaviour
 {
@@ -73,13 +75,13 @@ public class Gun : MonoBehaviour
 
     protected virtual void HandleProjectileFire()
     {
-        GameObject bulletGameobject = Instantiate(bulletPrefab, bulletSpawnPosition.position, bulletSpawnPosition.rotation);
+        GameObject bulletGameobject = PhotonNetwork.Instantiate(bulletPrefab.name, bulletSpawnPosition.position, bulletSpawnPosition.rotation);
         bulletGameobject.transform.forward = -cameraTransform.forward;
         Rigidbody bulletRB = bulletGameobject.GetComponent<Rigidbody>();
         bulletRB.AddForce(cameraTransform.forward * bulletSpeed);
 
         Bullet bullet = bulletGameobject.GetComponent<Bullet>();
-        bullet.SetOwner(transform);
+        bullet.SetTeam(player.GetComponent<TeamScript>().teamNumber);
         bullet.SetDamage(shotDamage);
 
         Destroy(bulletGameobject, maxBulletLifetime);

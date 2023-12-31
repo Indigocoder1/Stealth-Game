@@ -1,3 +1,4 @@
+using Mono.CSharp.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,9 @@ public class Player : MonoBehaviour
     [Header("Gravity")]
     public Vector3 gravityDirection;
     public float gravityForce;
+
+    [Header("Player Game Object")]
+    [SerializeField] private GameObject player;
 
     private ZeroGMovement zeroGMovement;
     private GroundMovement groundMovement;
@@ -49,5 +53,17 @@ public class Player : MonoBehaviour
     public bool InGravity()
     {
         return gravityDirection.sqrMagnitude > 0.01f;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        GameObject thing = collision.gameObject;
+       if (thing.tag == "Bullet")
+       {
+            if (thing.GetComponent<Bullet>().GetTeam() != player.GetComponent<TeamScript>().teamNumber)
+            {
+                player.GetComponent<PlayerHealth>().Damage(thing.GetComponent<Bullet>().GetDamage());
+            }
+       } 
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using Photon.Pun.Demo.Cockpit;
+using Unity.VisualScripting;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
@@ -50,8 +51,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             mySpawnPad = spawnPads[Random.Range(0, spawnPads.Length)];
         }
 
+
         GameObject player = PhotonNetwork.Instantiate(playerPrefab.name, mySpawnPad.transform.position, mySpawnPad.transform.rotation);//spawns player
+
+
+        //Enable the controls only for your player. Everything starts as disabled
         player.GetComponent<TeamScript>().teamNumber = teamNumber; //assigns player to random team generated above
+        player.GetComponent<TeamParagraph>().SetTeam(teamNumber); //sets the UI element to show the team name
+
+        player.GetComponent<ZeroGMovement>().enabled = true;
+        // player.GetComponent<GroundMovement>().enabled = true;// not set up yet.
+        player.transform.Find("CameraPosition").Find("Cameras").Find("Main Camera").gameObject.SetActive(true);
     }
 
 }

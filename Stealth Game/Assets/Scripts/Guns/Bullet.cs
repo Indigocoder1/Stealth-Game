@@ -2,32 +2,42 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    private Transform owner;
+    private int team;
     private int damage;
 
-    public void SetOwner(Transform owner)
+    public void SetTeam(int teamInput)
     {
-        this.owner = owner;
+        team = teamInput;
     }
 
-    public void SetDamage(int damage)
+    public int GetTeam() 
     {
-        this.damage = damage;
+        return team;
+    }
+
+    public void SetDamage(int damageInput)
+    {
+        damage = damageInput;
+    }
+
+    public int GetDamage()
+    {
+        return damage;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        IDamageable damageable = collision.gameObject.GetComponentInParent<IDamageable>();
-        if (damageable != null)
-        {
-            DamageTarget(damageable);
-        }
+        //IDamageable damageable = collision.gameObject.GetComponentInParent<IDamageable>();
+        //if (damageable != null)
+        //{
+        //    DamageTarget(damageable);
+        //}
 
         Destroy(gameObject);
     }
 
-    protected virtual void DamageTarget(IDamageable damageable)
-    {
-        damageable.Damage(damage);
-    }
+    //protected virtual void DamageTarget(IDamageable damageable)
+    //{
+       //damageable.Damage(damage);
+    //}
 }
