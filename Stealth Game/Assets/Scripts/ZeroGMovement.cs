@@ -1,9 +1,10 @@
-using UnityEditor.SceneTemplate;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
+using Unity.Collections;
+using Photon.Pun;
 
-public class ZeroGMovement : MonoBehaviour
+public class ZeroGMovement : MonoBehaviourPunCallbacks
 {
     [Header("Player Movement")]
     public float moveSpeed;
@@ -56,11 +57,14 @@ public class ZeroGMovement : MonoBehaviour
             Cursor.visible = false;
         }
 
-        Look(playerActions.Player.CameraMovement.ReadValue<Vector2>());
-        Move(playerActions.Player.Movement.ReadValue<Vector2>());
-        HandleAscendDescend();
-        LimitSpeed();
-        AlignModel();
+        if (photonView.IsMine)  // code below doesn't execute if this screen isn't the active screen.
+        {
+            Look(playerActions.Player.CameraMovement.ReadValue<Vector2>());
+            Move(playerActions.Player.Movement.ReadValue<Vector2>());
+            HandleAscendDescend();
+            LimitSpeed();
+            AlignModel();
+        }
     }
 
     private void Move(Vector2 direction)
@@ -110,7 +114,7 @@ public class ZeroGMovement : MonoBehaviour
         rb.AddForce(cameraHolder.up * ascendDescendAmount * ascendDescendSpeed * 200f * Time.deltaTime, ForceMode.Force);
     }
 
-    private void OnEnable()
+    override public void OnEnable()
     {
         playerActions.Enable();
         if(rb)
@@ -119,7 +123,7 @@ public class ZeroGMovement : MonoBehaviour
         }
     }
 
-    private void OnDisable()
+    override public void OnDisable()
     {
         playerActions.Disable();
     }
