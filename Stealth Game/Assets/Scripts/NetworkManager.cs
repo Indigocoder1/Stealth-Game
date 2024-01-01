@@ -56,12 +56,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
 
         //Enable the controls only for your player. Everything starts as disabled
-        player.GetComponent<TeamScript>().teamNumber = teamNumber; //assigns player to random team generated above
+        player.GetComponent<TeamScript>().setTeam(teamNumber); //assigns player to random team generated above
         player.GetComponent<TeamParagraph>().SetTeam(teamNumber); //sets the UI element to show the team name
 
         player.GetComponent<ZeroGMovement>().enabled = true;
         // player.GetComponent<GroundMovement>().enabled = true;// not set up yet.
         player.transform.Find("CameraPosition").Find("Cameras").Find("Main Camera").gameObject.SetActive(true);
+        player.transform.Find("UI").gameObject.SetActive(true);
+        player.transform.Find("CameraPosition").Find("Guns").Find("Taser").GetComponent<Taser>().enabled = true;
     }
 
 }
