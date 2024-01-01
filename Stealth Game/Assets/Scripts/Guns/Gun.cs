@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using Photon.Pun;
 using Unity.VisualScripting;
+using System.Collections;
 
 public class Gun : MonoBehaviour
 {
@@ -80,11 +81,17 @@ public class Gun : MonoBehaviour
         Rigidbody bulletRB = bulletGameobject.GetComponent<Rigidbody>();
         bulletRB.AddForce(cameraTransform.forward * bulletSpeed);
 
-        Bullet bullet = bulletGameobject.GetComponent<Bullet>();
-        bullet.SetTeam(player.GetComponent<TeamScript>().teamNumber);
+        TaserBullet bullet = bulletGameobject.GetComponent<TaserBullet>();
+        bullet.SetTeam(player.GetComponent<TeamScript>().getTeam());
         bullet.SetDamage(shotDamage);
 
-        Destroy(bulletGameobject, maxBulletLifetime);
+        StartCoroutine(DestroyThing(bulletGameobject));
+    }
+
+    private IEnumerator DestroyThing(GameObject bulletGameObject)
+    {
+        yield return new WaitForSeconds(maxBulletLifetime);
+        PhotonNetwork.Destroy(bulletGameObject);
     }
 
     protected virtual void HandleHitscanFire()

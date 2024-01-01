@@ -55,15 +55,5 @@ public class Player : MonoBehaviour
         return gravityDirection.sqrMagnitude > 0.01f;
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        GameObject thing = collision.gameObject;
-       if (thing.tag == "Bullet")
-       {
-            if (thing.GetComponent<Bullet>().GetTeam() != player.GetComponent<TeamScript>().teamNumber)
-            {
-                player.GetComponent<PlayerHealth>().Damage(thing.GetComponent<Bullet>().GetDamage());
-            }
-       } 
-    }
+    
 }

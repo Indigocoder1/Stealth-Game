@@ -4,5 +4,15 @@ using UnityEngine;
 
 public class TeamScript : MonoBehaviour
 {
-    public int teamNumber = 0;
+    private int teamNumber = 0;
+
+    public void setTeam(int team)
+    {
+        teamNumber = team;
+    }
+
+    public int getTeam()
+    {
+        return teamNumber;
+    }
 }
