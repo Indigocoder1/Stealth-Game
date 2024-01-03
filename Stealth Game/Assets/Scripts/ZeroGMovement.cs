@@ -46,6 +46,11 @@ public class ZeroGMovement : MonoBehaviourPunCallbacks
 
     private void Update()
     {
+        if (photonView && !photonView.IsMine)  // code below doesn't execute if this screen isn't the active screen.
+        {
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Cursor.lockState = CursorLockMode.None;
@@ -57,14 +62,11 @@ public class ZeroGMovement : MonoBehaviourPunCallbacks
             Cursor.visible = false;
         }
 
-        if (photonView.IsMine)  // code below doesn't execute if this screen isn't the active screen.
-        {
-            Look(playerActions.Player.CameraMovement.ReadValue<Vector2>());
-            Move(playerActions.Player.Movement.ReadValue<Vector2>());
-            HandleAscendDescend();
-            LimitSpeed();
-            AlignModel();
-        }
+        Look(playerActions.Player.CameraMovement.ReadValue<Vector2>());
+        Move(playerActions.Player.Movement.ReadValue<Vector2>());
+        HandleAscendDescend();
+        LimitSpeed();
+        AlignModel();
     }
 
     private void Move(Vector2 direction)

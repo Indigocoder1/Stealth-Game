@@ -56,7 +56,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
 
         //Enable the controls only for your player. Everything starts as disabled
-        player.GetComponent<TeamScript>().setTeam(teamNumber); //assigns player to random team generated above
+        player.GetComponent<TeamMember>().SetTeam(teamNumber); //assigns player to random team generated above
         player.GetComponent<TeamParagraph>().SetTeam(teamNumber); //sets the UI element to show the team name
 
         player.GetComponent<ZeroGMovement>().enabled = true;

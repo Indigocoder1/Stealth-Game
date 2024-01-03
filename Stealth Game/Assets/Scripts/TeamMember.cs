@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TeamScript : MonoBehaviour
+public class TeamMember : MonoBehaviour
 {
     private int teamNumber = 0;
 
-    public void setTeam(int team)
+    public void SetTeam(int team)
     {
         teamNumber = team;
     }
 
-    public int getTeam()
+    public int GetTeam()
     {
         return teamNumber;
     }

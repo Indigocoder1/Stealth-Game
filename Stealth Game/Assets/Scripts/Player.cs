@@ -1,6 +1,3 @@
-using Mono.CSharp.Linq;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -12,7 +9,7 @@ public class Player : MonoBehaviour
     public Vector3 gravityDirection;
     public float gravityForce;
 
-    [Header("Player Game Object")]
+    [Header("Multiplayer")]
     [SerializeField] private GameObject player;
 
     private ZeroGMovement zeroGMovement;

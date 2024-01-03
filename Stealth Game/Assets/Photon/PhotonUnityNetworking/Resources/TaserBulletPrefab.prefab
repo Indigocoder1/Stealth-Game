@@ -120,10 +120,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2130804843781003409}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09d33566c1573e24580f49c4f0ec1cfe, type: 3}
+  m_Script: {fileID: 11500000, guid: 8bc3853e393b3df44a6300ed9b9eb30e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  photonView: {fileID: 8825373883411814824}
 --- !u!114 &8825373883411814824
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using Photon.Pun;
-using Unity.VisualScripting;
 using System.Collections;
 
 public class Gun : MonoBehaviour
@@ -36,6 +35,7 @@ public class Gun : MonoBehaviour
     private float timeSinceLastShot;
     private PlayerInputActions inputActions;
     protected event EventHandler onHitscanHit;
+    protected bool isConnected = PhotonNetwork.IsConnected;
 
     private void Awake()
     {
@@ -65,7 +65,6 @@ public class Gun : MonoBehaviour
                 break;
         }
 
-
         recoilManager.AddRecoil(-verticalRecoil, horizontalRecoil + UnityEngine.Random.Range(-horizontalRandomness, horizontalRandomness));
 
         bool inGravity = player.InGravity();
@@ -76,22 +75,32 @@ public class Gun : MonoBehaviour
 
     protected virtual void HandleProjectileFire()
     {
-        GameObject bulletGameobject = PhotonNetwork.Instantiate(bulletPrefab.name, bulletSpawnPosition.position, bulletSpawnPosition.rotation);
+        GameObject bulletGameobject;
+        if (isConnected)
+        {
+            bulletGameobject = PhotonNetwork.Instantiate(bulletPrefab.name, bulletSpawnPosition.position, bulletSpawnPosition.rotation);
+        }
+        else
+        {
+            bulletGameobject = Instantiate(bulletPrefab, bulletSpawnPosition.position, bulletSpawnPosition.rotation);
+        }
+
         bulletGameobject.transform.forward = -cameraTransform.forward;
         Rigidbody bulletRB = bulletGameobject.GetComponent<Rigidbody>();
         bulletRB.AddForce(cameraTransform.forward * bulletSpeed);
 
-        TaserBullet bullet = bulletGameobject.GetComponent<TaserBullet>();
-        bullet.SetTeam(player.GetComponent<TeamScript>().getTeam());
+        Bullet bullet = bulletGameobject.GetComponent<Bullet>();
+        if(isConnected) bullet.SetTeam(player.GetComponent<TeamMember>().GetTeam());
         bullet.SetDamage(shotDamage);
 
-        StartCoroutine(DestroyThing(bulletGameobject));
+        if (isConnected) StartCoroutine(PhotonDestroyDelayed(bulletGameobject, maxBulletLifetime));
+        else Destroy(bulletGameobject, maxBulletLifetime);
     }
 
-    private IEnumerator DestroyThing(GameObject bulletGameObject)
+    private IEnumerator PhotonDestroyDelayed(GameObject gameObject, float delay)
     {
-        yield return new WaitForSeconds(maxBulletLifetime);
-        PhotonNetwork.Destroy(bulletGameObject);
+        yield return new WaitForSeconds(delay);
+        PhotonNetwork.Destroy(gameObject);
     }
 
     protected virtual void HandleHitscanFire()
