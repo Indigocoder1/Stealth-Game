@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using Photon.Pun;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Gun : MonoBehaviour
 {
@@ -36,6 +37,7 @@ public class Gun : MonoBehaviour
     private PlayerInputActions inputActions;
     protected event EventHandler onHitscanHit;
     protected bool isConnected = PhotonNetwork.IsConnected;
+    protected List<Bullet> activeBullets = new List<Bullet>();
 
     private void Awake()
     {
@@ -90,9 +92,13 @@ public class Gun : MonoBehaviour
         bulletRB.AddForce(cameraTransform.forward * bulletSpeed);
 
         Bullet bullet = bulletGameobject.GetComponent<Bullet>();
-        if(isConnected) bullet.SetTeam(player.GetComponent<TeamMember>().GetTeam());
         bullet.SetDamage(shotDamage);
+        bullet.SetOwner(this);
+        bullet.SetLifetime(maxBulletLifetime);
 
+        activeBullets.Add(bullet);
+
+        if (isConnected) bullet.SetTeam(player.GetComponent<TeamMember>().GetTeam());
         if (isConnected) StartCoroutine(PhotonDestroyDelayed(bulletGameobject, maxBulletLifetime));
         else Destroy(bulletGameobject, maxBulletLifetime);
     }
@@ -117,7 +123,12 @@ public class Gun : MonoBehaviour
         }
     }
 
-    private void Update()
+    public void RemoveActiveBullet(Bullet bullet)
+    {
+        activeBullets.Remove(bullet);
+    }
+
+    protected virtual void Update()
     {
         if (timeSinceLastShot < timeBetweenShots)
         {

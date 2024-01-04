@@ -1,16 +1,30 @@
 using UnityEngine;
 using Photon.Pun;
+using System;
 
 public class Bullet : MonoBehaviour
 {
-    protected int team = 0;
-    protected int damage = 0;
+    public event EventHandler OnImpact;
+    protected int team;
+    protected int damage;
+    protected float lifetime;
     protected PhotonView photonView;
     protected bool inMultiplayer = PhotonNetwork.IsConnected;
+    protected Gun owner;
 
     private void Start()
     {
         photonView = GetComponent<PhotonView>();
+    }
+
+    public void SetOwner(Gun owner)
+    {
+        this.owner = owner;
+    }
+
+    public void SetLifetime(float lifetime)
+    {
+        this.lifetime = lifetime;
     }
 
     public int GetTeam()
@@ -45,11 +59,24 @@ public class Bullet : MonoBehaviour
     public void SetDamageForAll(int damage)
     {
         this.damage = damage;
-        Debug.Log("Damage Set: " + this.damage);
+        Debug.Log($"Damage set to {this.damage}");
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        OnImpact?.Invoke(this, EventArgs.Empty);
+        OnBulletImpact(collision);
+    }
+
+    protected virtual void DamageTarget(IDamageable damageable)
+    {
+        Debug.Log("Trying to damage");
+        damageable.Damage(damage);
+    }
+
+    protected virtual void OnBulletImpact(Collision collision)
+    {
+        owner.RemoveActiveBullet(this);
         IDamageable damageable = collision.gameObject.GetComponentInParent<IDamageable>();
         if (damageable != null)
         {
@@ -59,9 +86,8 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject);
     }
 
-    protected virtual void DamageTarget(IDamageable damageable)
+    private void OnDestroy()
     {
-        Debug.Log("trying to damage");
-        damageable.Damage(damage);
+        owner.RemoveActiveBullet(this);
     }
 }

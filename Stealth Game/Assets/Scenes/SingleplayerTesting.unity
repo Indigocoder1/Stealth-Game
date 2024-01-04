@@ -2286,9 +2286,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e9968a4f5b763646bbd6a6fc3035894, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverBtn: {fileID: 730769972}
-  hostBtn: {fileID: 871263448}
-  clientBtn: {fileID: 207147542}
 --- !u!1 &1608630202
 GameObject:
   m_ObjectHideFlags: 0

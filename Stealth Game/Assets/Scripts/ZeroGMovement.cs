@@ -46,7 +46,7 @@ public class ZeroGMovement : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        if (photonView && !photonView.IsMine)  // code below doesn't execute if this screen isn't the active screen.
+        if (photonView && !photonView.IsMine)  //Code below doesn't execute if this screen isn't the active screen.
         {
             return;
         }
@@ -86,8 +86,8 @@ public class ZeroGMovement : MonoBehaviourPunCallbacks
         yRotation += mouseX;
 
         //Tilt
-        float tiltAmount = playerActions.Player.Tilt.ReadValue<float>();
-        tilt -= tiltAmount * tiltSpeed;
+        float tiltAmount = playerActions.Player.Tilt.ReadValue<float>() * Time.deltaTime * tiltSpeed;
+        tilt -= tiltAmount;
 
         cameraHolder.rotation *= Quaternion.Euler(-mouseY, mouseX, -tiltAmount * tiltSpeed);
         targetLerpPos = cameraHolder.rotation.eulerAngles + rb.velocity.normalized;
