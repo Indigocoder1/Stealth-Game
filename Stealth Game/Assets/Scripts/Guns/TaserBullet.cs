@@ -1,22 +1,26 @@
 using UnityEngine;
-using Photon.Pun;
 
 public class TaserBullet : Bullet
 {
-    private void OnCollisionEnter(Collision collision)
+    public float expireTime;
+
+    protected override void OnBulletImpact(Collision collision)
     {
+        owner.RemoveActiveBullet(this);
         IDamageable damageable = collision.gameObject.GetComponentInParent<IDamageable>();
         if (damageable != null)
         {
             DamageTarget(damageable);
         }
 
-        Destroy(gameObject);
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
+        transform.parent = collision.transform;
+
+        Destroy(gameObject, expireTime);
     }
 
-    protected virtual void DamageTarget(IDamageable damageable)
+    public void SetExpireTime(float expireTime)
     {
-        Debug.Log("trying to damage");
-        damageable.Damage(damage);
+        this.expireTime = expireTime;
     }
 }
