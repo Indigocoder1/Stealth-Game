@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Taser : Gun
+public class Taser : ProjectileGun
 {
     [Header("Effects")]
     public LineFX lineFX;
@@ -19,15 +19,15 @@ public class Taser : Gun
         ropeLightning.gameObject.SetActive(false);
     }
 
-    protected override void HandleProjectileFire()
+    protected override void HandleFire()
     {
-        base.HandleProjectileFire();
+        base.HandleFire();
 
         shotBullet = activeBullets[activeBullets.Count - 1];
 
         lineFX.SetTarget(shotBullet.transform);
         shotBullet.OnImpact += SpawnLightning;
-
+        
         ropeLightning.Simulate(0f, true);
         ropeLightning.gameObject.SetActive(true);
     }

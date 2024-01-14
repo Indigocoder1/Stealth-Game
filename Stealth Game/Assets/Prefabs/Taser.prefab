@@ -1006,24 +1006,21 @@ MonoBehaviour:
   timeBetweenShots: 2
   noGravityRepulseForce: 10
   gravityRepulseForce: 2
+  holsterTime: 0
   shotDamage: 0
   cameraTransform: {fileID: 0}
   playerRigidbody: {fileID: 0}
   player: {fileID: 0}
-  fireType: 0
+  fireType: 1
+  recoilManager: {fileID: 0}
+  verticalRecoil: 10
+  horizontalRecoil: 1.75
+  horizontalRandomness: 1.5
   bulletPrefab: {fileID: 2130804843781003409, guid: aae752e2e6c18c24d8943065f34937e9,
     type: 3}
   bulletSpawnPosition: {fileID: 9207600043222591342}
   bulletSpeed: 1000
   maxBulletLifetime: 2
-  maxDistance: 0
-  allowedHitMask:
-    serializedVersion: 2
-    m_Bits: 0
-  recoilManager: {fileID: 0}
-  verticalRecoil: 10
-  horizontalRecoil: 1.75
-  horizontalRandomness: 1.5
   lineFX: {fileID: 786478947653318669}
   ropeLightningPrefab: {fileID: 6473170097762910585, guid: f4dfec98ed2d6bc4ab9fd833aa6ea437,
     type: 3}

@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using Photon.Pun;
-using System.Collections;
 using System.Collections.Generic;
 
 public class Gun : MonoBehaviour
@@ -10,21 +9,12 @@ public class Gun : MonoBehaviour
     public float timeBetweenShots;
     public float noGravityRepulseForce;
     public float gravityRepulseForce;
+    public float holsterTime;
     public int shotDamage;
     public Transform cameraTransform;
     public Rigidbody playerRigidbody;
     public Player player;
     public FireType fireType;
-
-    [Header("Projectile")]
-    public GameObject bulletPrefab;
-    public Transform bulletSpawnPosition;
-    public float bulletSpeed;
-    public float maxBulletLifetime;
-
-    [Header("Hitscan")]
-    public float maxDistance;
-    public LayerMask allowedHitMask;
 
     [Header("Recoil")]
     public RecoilManager recoilManager;
@@ -35,14 +25,16 @@ public class Gun : MonoBehaviour
 
     private float timeSinceLastShot;
     private PlayerInputActions inputActions;
-    protected event EventHandler onHitscanHit;
     protected bool isConnected = PhotonNetwork.IsConnected;
     protected List<Bullet> activeBullets = new List<Bullet>();
 
     private void Awake()
     {
         inputActions = new PlayerInputActions();
-        inputActions.Player.Fire.performed += _ => Fire();
+        if(fireType == FireType.Click)
+        {
+            inputActions.Player.Fire.performed += _ => TryFire();
+        }
     }
 
     private void Start()
@@ -50,21 +42,11 @@ public class Gun : MonoBehaviour
         timeSinceLastShot = timeBetweenShots;
     }
 
-    protected virtual void Fire()
+    protected virtual void TryFire()
     {
         if (timeSinceLastShot < timeBetweenShots)
         {
             return;
-        }
-
-        switch (fireType)
-        {
-            case FireType.Projectile:
-                HandleProjectileFire();
-                break;
-            case FireType.Hitscan:
-                HandleHitscanFire();
-                break;
         }
 
         recoilManager.AddRecoil(-verticalRecoil, horizontalRecoil + UnityEngine.Random.Range(-horizontalRandomness, horizontalRandomness));
@@ -73,54 +55,13 @@ public class Gun : MonoBehaviour
         float repulseForce = inGravity ? gravityRepulseForce : noGravityRepulseForce;
         playerRigidbody.AddForce(-cameraTransform.forward * repulseForce * 10f, ForceMode.Force);
         timeSinceLastShot = 0;
+
+        HandleFire();
     }
 
-    protected virtual void HandleProjectileFire()
+    protected virtual void HandleFire()
     {
-        GameObject bulletGameobject;
-        if (isConnected)
-        {
-            bulletGameobject = PhotonNetwork.Instantiate(bulletPrefab.name, bulletSpawnPosition.position, bulletSpawnPosition.rotation);
-        }
-        else
-        {
-            bulletGameobject = Instantiate(bulletPrefab, bulletSpawnPosition.position, bulletSpawnPosition.rotation);
-        }
-
-        bulletGameobject.transform.forward = -cameraTransform.forward;
-        Rigidbody bulletRB = bulletGameobject.GetComponent<Rigidbody>();
-        bulletRB.AddForce(cameraTransform.forward * bulletSpeed);
-
-        Bullet bullet = bulletGameobject.GetComponent<Bullet>();
-        bullet.SetDamage(shotDamage);
-        bullet.SetOwner(this);
-        bullet.SetLifetime(maxBulletLifetime);
-
-        activeBullets.Add(bullet);
-
-        if (isConnected) bullet.SetTeam(player.GetComponent<TeamMember>().GetTeam());
-        if (isConnected) StartCoroutine(PhotonDestroyDelayed(bulletGameobject, maxBulletLifetime));
-        else Destroy(bulletGameobject, maxBulletLifetime);
-    }
-
-    private IEnumerator PhotonDestroyDelayed(GameObject gameObject, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        PhotonNetwork.Destroy(gameObject);
-    }
-
-    protected virtual void HandleHitscanFire()
-    {
-        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit hit, maxDistance, allowedHitMask))
-        {
-            onHitscanHit?.Invoke(this, EventArgs.Empty);
-
-            IDamageable damageable = hit.collider.GetComponentInParent<IDamageable>();
-            if (damageable != null)
-            {
-                damageable.Damage(shotDamage);
-            }
-        }
+        throw new NotImplementedException();
     }
 
     public void RemoveActiveBullet(Bullet bullet)
@@ -133,6 +74,11 @@ public class Gun : MonoBehaviour
         if (timeSinceLastShot < timeBetweenShots)
         {
             timeSinceLastShot += Time.deltaTime;
+        }
+
+        if(fireType == FireType.Hold && inputActions.Player.Fire.IsPressed())
+        {
+            TryFire();
         }
     }
 
@@ -149,6 +95,6 @@ public class Gun : MonoBehaviour
 
 public enum FireType
 {
-    Projectile,
-    Hitscan
+    Hold,
+    Click
 }
