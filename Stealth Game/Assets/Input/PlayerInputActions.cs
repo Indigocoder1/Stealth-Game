@@ -71,6 +71,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WeaponSwap"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""29ef965b-d3e9-4d3c-916c-df8dcdb189dc"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -315,6 +324,50 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Tilt"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7286a176-f8ea-4973-9d0d-0ca63ccb877c"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""WeaponSwap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""DPad"",
+                    ""id"": ""bbaa8bff-19d5-40bc-9382-33b25b994db1"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WeaponSwap"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""b2224a71-4f35-41be-9499-25379753c8d0"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""WeaponSwap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""a47bfdb2-0e92-43e0-bc4f-bc5a9590d551"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""WeaponSwap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -356,6 +409,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_AscendDescend = m_Player.FindAction("AscendDescend", throwIfNotFound: true);
         m_Player_Tilt = m_Player.FindAction("Tilt", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
+        m_Player_WeaponSwap = m_Player.FindAction("WeaponSwap", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -422,6 +476,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_AscendDescend;
     private readonly InputAction m_Player_Tilt;
     private readonly InputAction m_Player_Fire;
+    private readonly InputAction m_Player_WeaponSwap;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -431,6 +486,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @AscendDescend => m_Wrapper.m_Player_AscendDescend;
         public InputAction @Tilt => m_Wrapper.m_Player_Tilt;
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
+        public InputAction @WeaponSwap => m_Wrapper.m_Player_WeaponSwap;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -455,6 +511,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Fire.started += instance.OnFire;
             @Fire.performed += instance.OnFire;
             @Fire.canceled += instance.OnFire;
+            @WeaponSwap.started += instance.OnWeaponSwap;
+            @WeaponSwap.performed += instance.OnWeaponSwap;
+            @WeaponSwap.canceled += instance.OnWeaponSwap;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -474,6 +533,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Fire.started -= instance.OnFire;
             @Fire.performed -= instance.OnFire;
             @Fire.canceled -= instance.OnFire;
+            @WeaponSwap.started -= instance.OnWeaponSwap;
+            @WeaponSwap.performed -= instance.OnWeaponSwap;
+            @WeaponSwap.canceled -= instance.OnWeaponSwap;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -516,5 +578,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnAscendDescend(InputAction.CallbackContext context);
         void OnTilt(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
+        void OnWeaponSwap(InputAction.CallbackContext context);
     }
 }

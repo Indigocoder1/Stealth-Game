@@ -39,7 +39,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
         healthColor.color = healthColorGradient.Evaluate(normalizedHealth);
         healthBar.value = normalizedHealth;
-        Debug.Log("Damage Taken: " + damage + "hp lost;");
+        Debug.Log("Damage Taken: " + damage + "hp lost");
     }
 
     public int GetHealth()
