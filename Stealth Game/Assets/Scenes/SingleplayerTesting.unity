@@ -2764,6 +2764,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: SingleplayerPlayer
       objectReference: {fileID: 0}
+    - target: {fileID: 3105055432570342709, guid: f1482b13e49300c44b0ad30c23246b02,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4716233570489384946, guid: f1482b13e49300c44b0ad30c23246b02,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.0060312096
+      objectReference: {fileID: 0}
+    - target: {fileID: 4716233570489384946, guid: f1482b13e49300c44b0ad30c23246b02,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0015158292
+      objectReference: {fileID: 0}
+    - target: {fileID: 4716233570489384946, guid: f1482b13e49300c44b0ad30c23246b02,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.0023106073
+      objectReference: {fileID: 0}
     - target: {fileID: 5081106643109715674, guid: f1482b13e49300c44b0ad30c23246b02,
         type: 3}
       propertyPath: m_LocalPosition.x

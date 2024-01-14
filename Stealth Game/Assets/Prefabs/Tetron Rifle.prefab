@@ -76,7 +76,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 6239881831769578202, guid: c4672f10ea8ed5b48ac4c4eb501ee1d1, type: 3}
   m_Bones:
@@ -166,7 +166,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: -7387706064836869012, guid: c4672f10ea8ed5b48ac4c4eb501ee1d1, type: 3}
   m_Bones:
@@ -230,7 +230,7 @@ MonoBehaviour:
   timeBetweenShots: 0.1
   noGravityRepulseForce: 0.1
   gravityRepulseForce: 1
-  holsterTime: 0
+  holsterTime: 1
   shotDamage: 8
   cameraTransform: {fileID: 0}
   playerRigidbody: {fileID: 0}
@@ -677,7 +677,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 8691780276856062721, guid: c4672f10ea8ed5b48ac4c4eb501ee1d1, type: 3}
   m_Bones:
@@ -1213,7 +1213,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: -6318658350936181802, guid: c4672f10ea8ed5b48ac4c4eb501ee1d1, type: 3}
   m_Bones:

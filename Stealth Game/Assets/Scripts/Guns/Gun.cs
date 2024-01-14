@@ -9,6 +9,7 @@ public class Gun : MonoBehaviour
     public float timeBetweenShots;
     public float noGravityRepulseForce;
     public float gravityRepulseForce;
+    [Tooltip("Delay between switching weapons (Animation delay)")]
     public float holsterTime;
     public int shotDamage;
     public Transform cameraTransform;
@@ -31,7 +32,7 @@ public class Gun : MonoBehaviour
     private void Awake()
     {
         inputActions = new PlayerInputActions();
-        if(fireType == FireType.Click)
+        if(fireType == FireType.SemiAuto)
         {
             inputActions.Player.Fire.performed += _ => TryFire();
         }
@@ -76,7 +77,7 @@ public class Gun : MonoBehaviour
             timeSinceLastShot += Time.deltaTime;
         }
 
-        if(fireType == FireType.Hold && inputActions.Player.Fire.IsPressed())
+        if(fireType == FireType.Auto && inputActions.Player.Fire.IsPressed())
         {
             TryFire();
         }
@@ -95,6 +96,6 @@ public class Gun : MonoBehaviour
 
 public enum FireType
 {
-    Hold,
-    Click
+    Auto,
+    SemiAuto
 }
