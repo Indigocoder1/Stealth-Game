@@ -58,6 +58,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "AlphaSwapping",
+                    "type": "Value",
+                    "id": "354b7153-66ed-4de6-9e98-ff5121bfc4ee",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -346,6 +355,28 @@
                     "action": "WeaponSwap",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "e42b230b-8075-4890-844a-43215b0c1fbc",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "Scale",
+                    "groups": "Keyboard and Mouse",
+                    "action": "AlphaSwapping",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "290dc6a6-ad17-47ec-8a78-b9a481a9f1ca",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "Scale(factor=2)",
+                    "groups": "Keyboard and Mouse",
+                    "action": "AlphaSwapping",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

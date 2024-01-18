@@ -1016,6 +1016,12 @@ MonoBehaviour:
   verticalRecoil: 10
   horizontalRecoil: 1.75
   horizontalRandomness: 1.5
+  kickbackManager: {fileID: 0}
+  kickback: -0.6
+  horizontalKickback: 0
+  verticalKickback: 0
+  snappinessOverride: 0
+  returnSpeedOverride: 0
   bulletPrefab: {fileID: 2130804843781003409, guid: aae752e2e6c18c24d8943065f34937e9,
     type: 3}
   bulletSpawnPosition: {fileID: 9207600043222591342}
