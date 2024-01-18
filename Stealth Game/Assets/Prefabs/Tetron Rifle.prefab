@@ -230,7 +230,7 @@ MonoBehaviour:
   timeBetweenShots: 0.1
   noGravityRepulseForce: 0.1
   gravityRepulseForce: 1
-  holsterTime: 1
+  holsterTime: 0
   shotDamage: 8
   cameraTransform: {fileID: 0}
   playerRigidbody: {fileID: 0}

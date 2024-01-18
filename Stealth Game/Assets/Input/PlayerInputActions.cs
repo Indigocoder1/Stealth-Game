@@ -80,6 +80,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""AlphaSwapping"",
+                    ""type"": ""Value"",
+                    ""id"": ""354b7153-66ed-4de6-9e98-ff5121bfc4ee"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -368,6 +377,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""WeaponSwap"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e42b230b-8075-4890-844a-43215b0c1fbc"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale"",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""AlphaSwapping"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""290dc6a6-ad17-47ec-8a78-b9a481a9f1ca"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=2)"",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""AlphaSwapping"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -410,6 +441,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Tilt = m_Player.FindAction("Tilt", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_WeaponSwap = m_Player.FindAction("WeaponSwap", throwIfNotFound: true);
+        m_Player_AlphaSwapping = m_Player.FindAction("AlphaSwapping", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -477,6 +509,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Tilt;
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_WeaponSwap;
+    private readonly InputAction m_Player_AlphaSwapping;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -487,6 +520,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Tilt => m_Wrapper.m_Player_Tilt;
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputAction @WeaponSwap => m_Wrapper.m_Player_WeaponSwap;
+        public InputAction @AlphaSwapping => m_Wrapper.m_Player_AlphaSwapping;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -514,6 +548,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @WeaponSwap.started += instance.OnWeaponSwap;
             @WeaponSwap.performed += instance.OnWeaponSwap;
             @WeaponSwap.canceled += instance.OnWeaponSwap;
+            @AlphaSwapping.started += instance.OnAlphaSwapping;
+            @AlphaSwapping.performed += instance.OnAlphaSwapping;
+            @AlphaSwapping.canceled += instance.OnAlphaSwapping;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -536,6 +573,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @WeaponSwap.started -= instance.OnWeaponSwap;
             @WeaponSwap.performed -= instance.OnWeaponSwap;
             @WeaponSwap.canceled -= instance.OnWeaponSwap;
+            @AlphaSwapping.started -= instance.OnAlphaSwapping;
+            @AlphaSwapping.performed -= instance.OnAlphaSwapping;
+            @AlphaSwapping.canceled -= instance.OnAlphaSwapping;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -579,5 +619,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnTilt(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
         void OnWeaponSwap(InputAction.CallbackContext context);
+        void OnAlphaSwapping(InputAction.CallbackContext context);
     }
 }
