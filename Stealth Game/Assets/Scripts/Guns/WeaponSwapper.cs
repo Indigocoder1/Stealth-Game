@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class WeaponSwapper : MonoBehaviour
@@ -6,13 +7,14 @@ public class WeaponSwapper : MonoBehaviour
     private Gun activeGun;
     private Gun[] guns;
 
-    private int lastSwapValue;
     private float holsterTimer;
 
     private int gunIndex = 0;
     private int nextIndex;
     private bool swapped;
     private float swapValue;
+
+    public event EventHandler OnWeaponSwap;
 
     private void Awake()
     {
@@ -70,6 +72,8 @@ public class WeaponSwapper : MonoBehaviour
         activeGun = guns[index];
         activeGun.gameObject.SetActive(true);
         swapped = true;
+
+        OnWeaponSwap?.Invoke(this, EventArgs.Empty);
     }
 
     private void OnEnable()

@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using Photon.Pun;
 using System.Collections.Generic;
+using Random = UnityEngine.Random;
 
 public class Gun : MonoBehaviour
 {
@@ -23,6 +24,16 @@ public class Gun : MonoBehaviour
     public float horizontalRecoil;
     [Range(0, 5f)]
     public float horizontalRandomness;
+
+    [Header("Kickback")]
+    public KickbackManager kickbackManager;
+    public float kickback;
+    [Range(-5, 5)]
+    public float horizontalKickback;
+    [Range(-5, 5)]
+    public float verticalKickback;
+    public float snappinessOverride;
+    public float returnSpeedOverride;
 
     private float timeSinceLastShot;
     private PlayerInputActions inputActions;
@@ -50,7 +61,11 @@ public class Gun : MonoBehaviour
             return;
         }
 
-        recoilManager.AddRecoil(-verticalRecoil, horizontalRecoil + UnityEngine.Random.Range(-horizontalRandomness, horizontalRandomness));
+        recoilManager.AddRecoil(-verticalRecoil, horizontalRecoil + Random.Range(-horizontalRandomness, horizontalRandomness));
+
+        float horizontalKickback = Random.Range(-this.horizontalKickback, this.horizontalKickback);
+        float verticalKickback = Random.Range(-this.verticalKickback, this.verticalKickback);
+        kickbackManager.AddKickback(new Vector3(horizontalKickback, verticalKickback, kickback), snappinessOverride, returnSpeedOverride);
 
         bool inGravity = player.InGravity();
         float repulseForce = inGravity ? gravityRepulseForce : noGravityRepulseForce;

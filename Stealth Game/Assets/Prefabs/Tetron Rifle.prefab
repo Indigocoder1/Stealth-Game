@@ -240,6 +240,10 @@ MonoBehaviour:
   verticalRecoil: 2
   horizontalRecoil: 1.5
   horizontalRandomness: 0.71
+  kickbackManager: {fileID: 0}
+  kickback: -0.2
+  horizontalKickbackRandomness: 0.05
+  verticalKickbackRandomness: 0.1
   maxDistance: 200
   allowedHitMask:
     serializedVersion: 2

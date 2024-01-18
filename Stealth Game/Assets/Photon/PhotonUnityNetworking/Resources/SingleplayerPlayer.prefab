@@ -42,6 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2168309749086324886}
   - component: {fileID: 3105055432570342709}
+  - component: {fileID: 807720925453436903}
   m_Layer: 0
   m_Name: Guns
   m_TagString: Untagged
@@ -78,6 +79,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9065035b42b9a3241b888a9df5205f00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &807720925453436903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2022426984395029346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2e73b37f15517549b83741aa355ed3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  snappiness: 5
+  returnSpeed: 12
 --- !u!1 &2125801013775030428
 GameObject:
   m_ObjectHideFlags: 0
@@ -1085,6 +1100,11 @@ PrefabInstance:
       objectReference: {fileID: 2040377096604238070}
     - target: {fileID: 1488151084881100240, guid: 5a482a099bad3b24d9af84c405bff965,
         type: 3}
+      propertyPath: kickbackManager
+      value: 
+      objectReference: {fileID: 807720925453436903}
+    - target: {fileID: 1488151084881100240, guid: 5a482a099bad3b24d9af84c405bff965,
+        type: 3}
       propertyPath: playerRigidbody
       value: 
       objectReference: {fileID: 3429405737409143311}
@@ -1182,6 +1202,11 @@ PrefabInstance:
       propertyPath: cameraTransform
       value: 
       objectReference: {fileID: 2040377096604238070}
+    - target: {fileID: 7669597444389088758, guid: e09bafcb78f007e4598173e45ad42f56,
+        type: 3}
+      propertyPath: kickbackManager
+      value: 
+      objectReference: {fileID: 807720925453436903}
     - target: {fileID: 7669597444389088758, guid: e09bafcb78f007e4598173e45ad42f56,
         type: 3}
       propertyPath: playerRigidbody
