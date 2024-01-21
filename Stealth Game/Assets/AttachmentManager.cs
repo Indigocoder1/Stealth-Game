@@ -1,13 +1,10 @@
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class AttachmentManager : MonoBehaviour
 {
     [Header("Optics")]
-    public Camera camera;
-    public float zoomSpeed;
-    public Transform playerRoot;
+    public new Camera camera;
 
     private float originalFOV;
     private Vector3 originalPos;
@@ -38,11 +35,11 @@ public class AttachmentManager : MonoBehaviour
         float targetFOV = 0;
         if (inputActions.Player.ADS.IsPressed())
         {
-            targetFOV = Mathf.Lerp(camera.fieldOfView, originalFOV / activeOptic.zoomFactor, zoomSpeed * Time.deltaTime);
+            targetFOV = Mathf.Lerp(camera.fieldOfView, originalFOV / activeOptic.zoomFactor, activeOptic.zoomSpeed * Time.deltaTime);
         }
         else
         {
-            targetFOV = Mathf.Lerp(camera.fieldOfView, originalFOV, zoomSpeed * Time.deltaTime);
+            targetFOV = Mathf.Lerp(camera.fieldOfView, originalFOV, activeOptic.zoomSpeed * Time.deltaTime);
         }
 
         camera.fieldOfView = targetFOV;
@@ -50,15 +47,11 @@ public class AttachmentManager : MonoBehaviour
     
     private void HandleAimingPos()
     {
-        Vector3 newPos = camera.transform.position - activeOptic.cameraAimPos.position;
-        
-        Vector3 localADSPos = transform.localPosition + activeOptic.cameraAimPos.localPosition;
-        Vector3 offset = camera.transform.localPosition - localADSPos;
-        Debug.Log($"{localADSPos} | {offset}");
+        Vector3 offset = transform.parent.InverseTransformVector(camera.transform.position - activeOptic.cameraAimPos.position);
 
-        Vector3 targetPos = inputActions.Player.ADS.IsPressed() ? offset : originalPos;
+        Vector3 targetPos = inputActions.Player.ADS.IsPressed() ? transform.localPosition + offset : originalPos;
 
-        transform.localPosition = Vector3.Lerp(transform.localPosition, targetPos, zoomSpeed * Time.deltaTime);
+        transform.localPosition = Vector3.Lerp(transform.localPosition, targetPos, activeOptic.adsSpeed * Time.deltaTime);
     }
 
     #region ---Optics---

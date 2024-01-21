@@ -229,8 +229,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeBetweenShots: 0.1
-  noGravityRepulseForce: 0.1
-  gravityRepulseForce: 1
+  noGravityRepulseForce: 2
+  gravityRepulseForce: 0.1
   holsterTime: 0
   shotDamage: 8
   cameraTransform: {fileID: 0}
@@ -240,11 +240,11 @@ MonoBehaviour:
   recoilManager: {fileID: 0}
   verticalRecoil: 2
   horizontalRecoil: 1.5
-  horizontalRandomness: 0.71
+  horizontalRandomness: 0.86
   kickbackManager: {fileID: 0}
   kickback: -0.2
-  horizontalKickback: 0
-  verticalKickback: 0
+  horizontalKickback: 0.01
+  verticalKickback: 0.01
   snappinessOverride: 0
   returnSpeedOverride: 0
   maxDistance: 200
@@ -266,7 +266,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camera: {fileID: 0}
-  zoomSpeed: 5
   optics:
   - {fileID: 2709755862598784727}
 --- !u!1 &2255780770858315207
@@ -794,6 +793,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraAimPos: {fileID: 5717490888669340089}
   zoomFactor: 2
+  zoomSpeed: 5
+  adsSpeed: 6
 --- !u!1 &5058771099941863900
 GameObject:
   m_ObjectHideFlags: 0
