@@ -67,6 +67,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "ADS",
+                    "type": "Value",
+                    "id": "d070dfef-ea13-405a-8ed6-390663ef4982",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -375,6 +384,28 @@
                     "processors": "Scale(factor=2)",
                     "groups": "Keyboard and Mouse",
                     "action": "AlphaSwapping",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "92bb150e-4797-4eb8-84a3-b4eb49f11210",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "ADS",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "28a212e5-4a45-4f0c-bcbf-6f7465175ef8",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "ADS",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

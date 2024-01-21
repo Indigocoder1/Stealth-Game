@@ -190,6 +190,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3795617721118460249}
   - component: {fileID: 1488151084881100240}
+  - component: {fileID: 6308735567186201286}
   m_Layer: 0
   m_Name: Tetron Rifle
   m_TagString: Untagged
@@ -242,14 +243,32 @@ MonoBehaviour:
   horizontalRandomness: 0.71
   kickbackManager: {fileID: 0}
   kickback: -0.2
-  horizontalKickbackRandomness: 0.05
-  verticalKickbackRandomness: 0.1
+  horizontalKickback: 0
+  verticalKickback: 0
+  snappinessOverride: 0
+  returnSpeedOverride: 0
   maxDistance: 200
   allowedHitMask:
     serializedVersion: 2
     m_Bits: 4294967295
   impactEffect: {fileID: 8547837714735108522, guid: f03506c64edd8674283916e54510bed4,
     type: 3}
+--- !u!114 &6308735567186201286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724428718674306851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78422225290ee9f45838746eff21ee5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camera: {fileID: 0}
+  zoomSpeed: 5
+  optics:
+  - {fileID: 2709755862598784727}
 --- !u!1 &2255780770858315207
 GameObject:
   m_ObjectHideFlags: 0
@@ -735,6 +754,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3817389369530555317}
+  - component: {fileID: 2709755862598784727}
   m_Layer: 0
   m_Name: Iron Sights
   m_TagString: Untagged
@@ -757,8 +777,23 @@ Transform:
   m_Children:
   - {fileID: 1283190899925523436}
   - {fileID: 2830073095508305962}
+  - {fileID: 5717490888669340089}
   m_Father: {fileID: 3795617721118460249}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2709755862598784727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4634937969049837418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c595df6978dffd2409d4023f11f014e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraAimPos: {fileID: 5717490888669340089}
+  zoomFactor: 2
 --- !u!1 &5058771099941863900
 GameObject:
   m_ObjectHideFlags: 0
@@ -880,6 +915,37 @@ Transform:
   - {fileID: 4177812780420504353}
   m_Father: {fileID: 2696082514665997942}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5971717381869061804
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5717490888669340089}
+  m_Layer: 0
+  m_Name: CameraAimPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5717490888669340089
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5971717381869061804}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.004619, y: 0, z: 0.00214}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3817389369530555317}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6148726929227544348
 GameObject:
   m_ObjectHideFlags: 0
@@ -939,7 +1005,7 @@ Transform:
   m_GameObject: {fileID: 6902230900506827857}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.0033151652, y: 0, z: 0.0020122048}
+  m_LocalPosition: {x: -0.0033151652, y: 0, z: 0.001991}
   m_LocalScale: {x: 0.008628053, y: 0.0026838812, z: 0.008030775}
   m_ConstrainProportionsScale: 0
   m_Children: []
