@@ -28,9 +28,9 @@ public class Gun : MonoBehaviour
     [Header("Kickback")]
     public KickbackManager kickbackManager;
     public float kickback;
-    [Range(-5, 5)]
+    [Range(-1, 1)]
     public float horizontalKickback;
-    [Range(-5, 5)]
+    [Range(-1, 1)]
     public float verticalKickback;
     public float snappinessOverride;
     public float returnSpeedOverride;

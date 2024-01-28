@@ -334,7 +334,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.1569233
+        value: 0.07396126
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -743,7 +743,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 1, z: -0, w: -0.00000017695129}
   m_LocalPosition: {x: 0.063, y: -0.037, z: 0.008}
-  m_LocalScale: {x: 0.18607226, y: 0.18607226, z: 0.18607226}
+  m_LocalScale: {x: 0.12028641, y: 0.12028641, z: 0.12028641}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3742708059473189242}
@@ -783,7 +783,7 @@ Transform:
   m_GameObject: {fileID: 5978909488852552777}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.05, y: 0.082, z: 0.357}
+  m_LocalPosition: {x: 0.05, y: 0.0413, z: 0.2232}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

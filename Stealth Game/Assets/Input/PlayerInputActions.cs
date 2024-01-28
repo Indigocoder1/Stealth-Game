@@ -89,6 +89,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ADS"",
+                    ""type"": ""Value"",
+                    ""id"": ""d070dfef-ea13-405a-8ed6-390663ef4982"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -399,6 +408,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""AlphaSwapping"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""92bb150e-4797-4eb8-84a3-b4eb49f11210"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""ADS"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""28a212e5-4a45-4f0c-bcbf-6f7465175ef8"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""ADS"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -442,6 +473,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_WeaponSwap = m_Player.FindAction("WeaponSwap", throwIfNotFound: true);
         m_Player_AlphaSwapping = m_Player.FindAction("AlphaSwapping", throwIfNotFound: true);
+        m_Player_ADS = m_Player.FindAction("ADS", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -510,6 +542,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_WeaponSwap;
     private readonly InputAction m_Player_AlphaSwapping;
+    private readonly InputAction m_Player_ADS;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -521,6 +554,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputAction @WeaponSwap => m_Wrapper.m_Player_WeaponSwap;
         public InputAction @AlphaSwapping => m_Wrapper.m_Player_AlphaSwapping;
+        public InputAction @ADS => m_Wrapper.m_Player_ADS;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -551,6 +585,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @AlphaSwapping.started += instance.OnAlphaSwapping;
             @AlphaSwapping.performed += instance.OnAlphaSwapping;
             @AlphaSwapping.canceled += instance.OnAlphaSwapping;
+            @ADS.started += instance.OnADS;
+            @ADS.performed += instance.OnADS;
+            @ADS.canceled += instance.OnADS;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -576,6 +613,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @AlphaSwapping.started -= instance.OnAlphaSwapping;
             @AlphaSwapping.performed -= instance.OnAlphaSwapping;
             @AlphaSwapping.canceled -= instance.OnAlphaSwapping;
+            @ADS.started -= instance.OnADS;
+            @ADS.performed -= instance.OnADS;
+            @ADS.canceled -= instance.OnADS;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -620,5 +660,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnFire(InputAction.CallbackContext context);
         void OnWeaponSwap(InputAction.CallbackContext context);
         void OnAlphaSwapping(InputAction.CallbackContext context);
+        void OnADS(InputAction.CallbackContext context);
     }
 }
