@@ -43,6 +43,7 @@ MonoBehaviour:
   - SetTeam
   - SetDamageForAll
   - SetTeamForAll
+  - UpdateAllNametags
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

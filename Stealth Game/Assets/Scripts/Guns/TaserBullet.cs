@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TaserBullet : Bullet
+public class TaserBullet : MultiplayerBullet
 {
     public float expireTime;
 

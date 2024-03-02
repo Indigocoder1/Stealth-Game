@@ -4,8 +4,8 @@ using UnityEngine;
 public class WeaponSwapper : MonoBehaviour
 {
     private PlayerInputActions inputActions;
-    private Gun activeGun;
-    private Gun[] guns;
+    private MultiplayerGun activeGun;
+    private MultiplayerGun[] guns;
 
     private float holsterTimer;
 
@@ -19,9 +19,9 @@ public class WeaponSwapper : MonoBehaviour
     private void Awake()
     {
         inputActions = new PlayerInputActions();
-        guns = GetComponentsInChildren<Gun>(true);
+        guns = GetComponentsInChildren<MultiplayerGun>(true);
 
-        foreach (Gun gun in guns)
+        foreach (MultiplayerGun gun in guns)
         {
             gun.gameObject.SetActive(false);
         }

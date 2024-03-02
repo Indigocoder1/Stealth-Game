@@ -51,11 +51,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             mySpawnPad = spawnPads[Random.Range(0, spawnPads.Length)];
         }
 
-
+        
         GameObject player = PhotonNetwork.Instantiate(playerPrefab.name, mySpawnPad.transform.position, mySpawnPad.transform.rotation);//spawns player
 
+        player.GetPhotonView().RPC("UpdateAllNametags", RpcTarget.All, (GameObject)player);
 
-        //Enable the controls only for your player. Everything starts as disabled
+        //Enables the controls only for your player. Everything starts as disabled
         player.GetComponent<TeamMember>().SetTeam(teamNumber); //assigns player to random team generated above
         player.GetComponent<TeamParagraph>().SetTeam(teamNumber); //sets the UI element to show the team name
 
@@ -63,7 +64,28 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         // player.GetComponent<GroundMovement>().enabled = true;// not set up yet.
         player.transform.Find("CameraPosition").Find("Cameras").Find("Main Camera").gameObject.SetActive(true);
         player.transform.Find("UI").gameObject.SetActive(true);
-        player.transform.Find("CameraPosition").Find("Guns").Find("Taser").GetComponent<Taser>().enabled = true;
+        //player.transform.Find("CameraPosition").Find("Guns").Find("Taser").GetComponent<Taser>().enabled = true; //already enabled
+
+        player.transform.Find("UsernameCanvas").Find("Nametag").gameObject.SetActive(false);
+    }
+
+    [PunRPC]
+    public void UpdateAllNametags(GameObject me)
+    {
+        Debug.Log("In function");
+        GameObject[] allPlayers = GameObject.FindGameObjectsWithTag("Player");
+        for (int i = 0; i < allPlayers.Length; i++)
+        {
+            GameObject player = allPlayers[i];
+
+            Debug.Log("PlayerCount: " + allPlayers[i]);
+            Debug.Log("PlayerName: " + player.GetPhotonView().Owner.NickName);
+            Debug.Log("MyName: " + me.GetPhotonView().Owner.NickName);
+            if (player.GetPhotonView().Owner.NickName != me.GetPhotonView().Owner.NickName)
+            {
+                player.transform.Find("UsernameCanvas").Find("Nametag").GetComponent<NametagScript>().ChangeName(player.name);
+            }
+        }
     }
 
 }

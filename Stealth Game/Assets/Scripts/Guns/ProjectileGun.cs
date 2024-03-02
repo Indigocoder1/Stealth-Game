@@ -2,7 +2,7 @@ using Photon.Pun;
 using System.Collections;
 using UnityEngine;
 
-public class ProjectileGun : Gun
+public class ProjectileGun : MultiplayerGun
 {
     [Header("Projectile")]
     public GameObject bulletPrefab;
@@ -12,6 +12,7 @@ public class ProjectileGun : Gun
 
     protected override void HandleFire()
     {
+        Debug.Log("Projectile Gun Handling Fire");
         GameObject bulletGameobject;
         if (isConnected)
         {
@@ -26,7 +27,7 @@ public class ProjectileGun : Gun
         Rigidbody bulletRB = bulletGameobject.GetComponent<Rigidbody>();
         bulletRB.AddForce(cameraTransform.forward * bulletSpeed);
 
-        Bullet bullet = bulletGameobject.GetComponent<Bullet>();
+        MultiplayerBullet bullet = bulletGameobject.GetComponent<MultiplayerBullet>();
         bullet.SetDamage(shotDamage);
         bullet.SetOwner(this);
         bullet.SetLifetime(maxBulletLifetime);

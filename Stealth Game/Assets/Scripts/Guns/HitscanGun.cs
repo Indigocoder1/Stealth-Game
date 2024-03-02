@@ -1,7 +1,8 @@
 using System;
 using UnityEngine;
+using Photon.Pun;
 
-public class HitscanGun : Gun
+public class HitscanGun : MultiplayerGun
 {
     [Header("Hitscan")]
     public float maxDistance;
@@ -16,7 +17,7 @@ public class HitscanGun : Gun
         {
             onHitscanHit?.Invoke(this, EventArgs.Empty);
 
-            GameObject effect = Instantiate(impactEffect, hit.point + (hit.normal * 0.001f), Quaternion.LookRotation(hit.normal));
+            GameObject effect = PhotonNetwork.Instantiate(impactEffect.name, hit.point + (hit.normal * 0.001f), Quaternion.LookRotation(hit.normal));
 
             IDamageable damageable = hit.collider.GetComponentInParent<IDamageable>();
             if (damageable != null)

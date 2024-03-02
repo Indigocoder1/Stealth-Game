@@ -123,6 +123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bc3853e393b3df44a6300ed9b9eb30e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  photonView: {fileID: 8825373883411814824}
   expireTime: 2
 --- !u!114 &8825373883411814824
 MonoBehaviour:
