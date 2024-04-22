@@ -1,14 +1,22 @@
 using UnityEngine;
 using Photon.Pun;
-using UnityEngine.InputSystem;
+using static UnityEditor.Rendering.ShadowCascadeGUI;
 
 public class GroundMovement : MonoBehaviourPunCallbacks
 {
     [Header("Player Movement")]
-    public float moveSpeed;
-    public float maxSpeed;
+    public float walkSpeed;
+    public float sprintSpeed;
+    public float crouchSpeed;
+    public float maxWalkSpeed;
+    public float maxSprintSpeed;
+    public float maxCrouchSpeed;
     public float groundDrag;
     public float airSpeedMultiplier;
+
+    private float currentMoveSpeed;
+    private float currentMaxSpeed;
+    private bool isSprinting;
 
     [Header("Jumping")]
     public float jumpForce;
@@ -16,9 +24,22 @@ public class GroundMovement : MonoBehaviourPunCallbacks
 
     private bool readyToJump;
 
+    [Header("Crouching")]
+    public GameObject playerModel;
+    public CapsuleCollider playerCollider;
+    public float crouchScaleSpeed;
+    public float crouchYScale;
+
+    private float startYScale;
+    private float startCapsuleYScale;
+    private float startCameraYPos;
+    private bool isCrouching;
+
     [Header("Ground Detection")]
+    public Transform groundDetectionPoint;
     public float raycastLength;
     public LayerMask whatIsGround;
+
     private bool isGrounded;
 
     [Header("Camera Movement")]
@@ -33,6 +54,16 @@ public class GroundMovement : MonoBehaviourPunCallbacks
     private float xRotation;
     private float yRotation;
 
+    private MovementState movementState;
+
+    public enum MovementState
+    {
+        Walking,
+        Sprinting,
+        Crouching,
+        Air
+    }
+
     private void Awake()
     {
         playerActions = new PlayerInputActions();
@@ -44,14 +75,29 @@ public class GroundMovement : MonoBehaviourPunCallbacks
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
+        startYScale = playerModel.transform.localScale.y;
+        startCapsuleYScale = playerCollider.height;
+        startCameraYPos = cameraHolder.localPosition.y;
+
         recoilManager.OnRotationDeltaCalculated += RecoilManager_OnRotationDeltaCalculated;
+        playerActions.Player.Sprint.performed += _ =>
+        {
+            isSprinting = true;
+        };
+        playerActions.Player.Crouch.performed += _ =>
+        {
+            isCrouching = !isCrouching;
+        };
     }
 
     private void Update()
     {
+        HandleState();
+
         CheckForGround();
         TryJump();
         LimitSpeed();
+        HandleCrouch();
 
         Look(playerActions.Player.CameraMovement.ReadValue<Vector2>());
     }
@@ -67,7 +113,7 @@ public class GroundMovement : MonoBehaviourPunCallbacks
         moveDir.y = 0;
 
         float speedMultiplier = !isGrounded ? airSpeedMultiplier : 1;
-        rb.AddForce(moveDir.normalized * moveSpeed * speedMultiplier, ForceMode.Force);
+        rb.AddForce(moveDir.normalized * currentMoveSpeed * speedMultiplier, ForceMode.Force);
     }
 
     private void Look(Vector2 delta)
@@ -84,7 +130,7 @@ public class GroundMovement : MonoBehaviourPunCallbacks
 
     private void CheckForGround()
     {
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, raycastLength, whatIsGround);
+        isGrounded = Physics.Raycast(groundDetectionPoint.position, Vector3.down, raycastLength, whatIsGround);
 
         if(isGrounded)
         {
@@ -100,9 +146,9 @@ public class GroundMovement : MonoBehaviourPunCallbacks
     {
         Vector3 flatVel = new Vector3(rb.velocity.x, 0, rb.velocity.z);
 
-        if(flatVel.magnitude > maxSpeed)
+        if(flatVel.magnitude > currentMaxSpeed)
         {
-            Vector3 cappedVector = flatVel.normalized * maxSpeed;
+            Vector3 cappedVector = flatVel.normalized * currentMaxSpeed;
             rb.velocity = new Vector3(cappedVector.x, rb.velocity.y, cappedVector.z);
         }
     }
@@ -127,6 +173,56 @@ public class GroundMovement : MonoBehaviourPunCallbacks
     private void ResetAllowedToJump()
     {
         readyToJump = true;
+    }
+
+    private void HandleState()
+    {
+        if(rb.velocity.sqrMagnitude < .1f)
+        {
+            isSprinting = false;
+        }
+
+        movementState = MovementState.Air;
+
+        if (isGrounded && isSprinting)
+        {
+            movementState = MovementState.Sprinting;
+            currentMoveSpeed = sprintSpeed;
+            currentMaxSpeed = maxSprintSpeed;
+        }
+        else if(isGrounded && isCrouching)
+        {
+            movementState = MovementState.Crouching;
+            currentMoveSpeed = crouchSpeed;
+            currentMaxSpeed = maxCrouchSpeed;
+        }
+        else if(isGrounded)
+        {
+            movementState = MovementState.Walking;
+            currentMoveSpeed = walkSpeed;
+            currentMaxSpeed = maxWalkSpeed;
+        }
+    }
+
+    private void HandleCrouch()
+    {
+        float targetScale = 1f;
+
+        if(isCrouching)
+        {
+            targetScale = crouchYScale;
+        }
+
+        Vector3 targetModelScale = new Vector3(playerModel.transform.localScale.x, startYScale * targetScale, playerModel.transform.localScale.z);
+        playerModel.transform.localScale = Vector3.MoveTowards(playerModel.transform.localScale, targetModelScale, crouchScaleSpeed * Time.deltaTime);
+
+        Vector3 targetCamPos = new Vector3(cameraHolder.localPosition.x, startCameraYPos * targetScale, cameraHolder.localPosition.z);
+        cameraHolder.localPosition = Vector3.MoveTowards(cameraHolder.localPosition, targetCamPos, crouchScaleSpeed * Time.deltaTime);
+
+        if(playerCollider.gameObject != playerModel)
+        {
+            playerCollider.height = Mathf.MoveTowards(playerCollider.height, startCapsuleYScale * targetScale, crouchScaleSpeed * Time.deltaTime);
+        }
     }
 
     private void RecoilManager_OnRotationDeltaCalculated(object sender, RecoilManagerEventArgs e)

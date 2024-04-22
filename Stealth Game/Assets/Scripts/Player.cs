@@ -50,7 +50,10 @@ public class Player : MonoBehaviour
 
     private void HandleGravity()
     {
-        rb.AddForce(gravityDirection * gravityForce, ForceMode.Acceleration);
+        if(InGravity())
+        {
+            rb.AddForce(gravityDirection * gravityForce, ForceMode.Acceleration);
+        }
     }
 
     public bool IsGrounded()
