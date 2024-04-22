@@ -31,7 +31,7 @@ Transform:
   m_LocalScale: {x: 0.40968895, y: 0.17734814, z: 0.44689}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4523804345741600148}
+  m_Father: {fileID: 2388442014257233310}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6490822432811935278
 MeshFilter:
@@ -290,7 +290,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8130784715624872226}
-  m_Father: {fileID: 4523804345741600148}
+  m_Father: {fileID: 2388442014257233310}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3600258253467809421
 GameObject:
@@ -427,7 +427,7 @@ Transform:
   m_Children:
   - {fileID: 2463505676110035033}
   - {fileID: 4983909062052968138}
-  m_Father: {fileID: 4523804345741600148}
+  m_Father: {fileID: 2388442014257233310}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &432043070650864785
 MonoBehaviour:
@@ -501,7 +501,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3704755323729936696}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 100
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -533,8 +533,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundDistanceCheck: 0.1
-  gravityDirection: {x: 0, y: 0, z: 0}
-  gravityForce: 10
+  rb: {fileID: 107525425301142443}
+  gravityDirection: {x: 0, y: -1, z: 0}
+  gravityForce: 20
   player: {fileID: 0}
 --- !u!114 &5042007589590494966
 MonoBehaviour:
@@ -548,7 +549,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68ee25e4bf32e1b4baaa840fb6b7d59e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 200
+  moveSpeed: 1750
   maxSpeed: 10
   drag: 2
   ascendDescendSpeed: 7
@@ -570,10 +571,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5069c924f5ee1e74ca01837649f6f409, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 4000
+  maxSpeed: 10
+  groundDrag: 2
+  airSpeedMultiplier: 0.075
+  jumpForce: 750
+  jumpCooldown: 0.25
+  raycastLength: 0.1
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 4294967295
   xSensitivity: 15
   ySensitivity: 20
   cameraHolder: {fileID: 4523804345741600148}
-  recoilManager: {fileID: 3082547380162105663}
+  recoilManager: {fileID: 3542786859539914252}
 --- !u!114 &3140438873883768861
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -762,6 +773,54 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &6855278034536680414
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2388442014257233310}
+  - component: {fileID: 3542786859539914252}
+  m_Layer: 0
+  m_Name: RecoilManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2388442014257233310
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6855278034536680414}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7301825850803695533}
+  - {fileID: 2113921902215494597}
+  - {fileID: 3530489704482754866}
+  m_Father: {fileID: 4523804345741600148}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3542786859539914252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6855278034536680414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd963d0b07ba8ef43b1d9a63eadf8647, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  snappiness: 9
 --- !u!1 &6859705545589063345
 GameObject:
   m_ObjectHideFlags: 0
@@ -846,10 +905,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4523804345741600148}
-  - component: {fileID: 3082547380162105663}
   - component: {fileID: 3781040933968192530}
   m_Layer: 0
-  m_Name: CameraPosition
+  m_Name: CameraHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -868,24 +926,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7301825850803695533}
-  - {fileID: 2113921902215494597}
-  - {fileID: 3530489704482754866}
+  - {fileID: 2388442014257233310}
   m_Father: {fileID: 7173207761583567891}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3082547380162105663
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7051229822749915404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd963d0b07ba8ef43b1d9a63eadf8647, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  snappiness: 9
 --- !u!114 &3781040933968192530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1178,7 +1221,7 @@ PrefabInstance:
         type: 3}
       propertyPath: recoilManager
       value: 
-      objectReference: {fileID: 3082547380162105663}
+      objectReference: {fileID: 3542786859539914252}
     - target: {fileID: 7669597444389088758, guid: e09bafcb78f007e4598173e45ad42f56,
         type: 3}
       propertyPath: cameraTransform
@@ -1272,7 +1315,7 @@ PrefabInstance:
         type: 3}
       propertyPath: recoilManager
       value: 
-      objectReference: {fileID: 3082547380162105663}
+      objectReference: {fileID: 3542786859539914252}
     - target: {fileID: 1488151084881100240, guid: 5a482a099bad3b24d9af84c405bff965,
         type: 3}
       propertyPath: cameraTransform

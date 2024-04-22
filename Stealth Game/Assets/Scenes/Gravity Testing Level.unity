@@ -4006,11 +4006,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 467618108168129114, guid: 72ef18b10e1fac74d9dd0b13a19a7664,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2608602645166394110, guid: 72ef18b10e1fac74d9dd0b13a19a7664,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -4025,11 +4020,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SingleplayerPlayer
-      objectReference: {fileID: 0}
-    - target: {fileID: 3447149149371199979, guid: 72ef18b10e1fac74d9dd0b13a19a7664,
-        type: 3}
-      propertyPath: gravityDirection.y
-      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 7173207761583567891, guid: 72ef18b10e1fac74d9dd0b13a19a7664,
         type: 3}

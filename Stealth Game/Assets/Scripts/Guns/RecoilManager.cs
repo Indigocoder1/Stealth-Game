@@ -1,28 +1,46 @@
+using System;
 using UnityEngine;
 
 public class RecoilManager : MonoBehaviour
 {
+    public event EventHandler<RecoilManagerEventArgs> OnRotationDeltaCalculated;
     public float snappiness;
 
     private Vector3 currentRotation;
     private Vector3 targetRotation;
-    private Vector3 lastRotationDelta;
+    private bool isRotateAllowed;
 
     private void Update()
     {
         Vector3 oldRotation = currentRotation;
         currentRotation = Vector3.Slerp(currentRotation, targetRotation, snappiness * Time.deltaTime);
-        lastRotationDelta = currentRotation - oldRotation;
-        transform.rotation *= Quaternion.Euler(lastRotationDelta);
+
+        Vector3 rotationDelta = currentRotation - oldRotation;
+        OnRotationDeltaCalculated?.Invoke(this, new RecoilManagerEventArgs(rotationDelta));
+
+        if(isRotateAllowed)
+        {
+            transform.rotation *= Quaternion.Euler(rotationDelta);
+        }
     }
 
     public void AddRecoil(float recoilX, float recoilY)
     {
-        targetRotation += new Vector3(recoilX, Random.Range(-recoilY, recoilY), 0);
+        targetRotation += new Vector3(recoilX, UnityEngine.Random.Range(-recoilY, recoilY), 0);
     }
 
-    public Vector3 GetRotationDelta()
+    public void SetRotateAllowed(bool isRotateAllowed)
     {
-        return lastRotationDelta;
+        this.isRotateAllowed = isRotateAllowed;
+    }
+}
+
+public class RecoilManagerEventArgs : EventArgs
+{
+    public Vector3 rotationDelta;
+
+    public RecoilManagerEventArgs(Vector3 rotationDelta)
+    {
+        this.rotationDelta = rotationDelta;
     }
 }
