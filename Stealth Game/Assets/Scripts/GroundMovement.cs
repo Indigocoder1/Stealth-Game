@@ -37,10 +37,14 @@ public class GroundMovement : MonoBehaviourPunCallbacks
 
     [Header("Ground Detection")]
     public Transform groundDetectionPoint;
-    public float raycastLength;
+    public float groundDetectionRaycastLength;
     public LayerMask whatIsGround;
 
     private bool isGrounded;
+
+    [Header("Slope Handling")]
+    public float maxSlopeAngle;
+    private RaycastHit slopeHit;
 
     [Header("Camera Movement")]
     public float xSensitivity;
@@ -112,6 +116,11 @@ public class GroundMovement : MonoBehaviourPunCallbacks
         Vector3 moveDir = cameraHolder.forward * direction.y + cameraHolder.right * direction.x;
         moveDir.y = 0;
 
+        if(IsOnSlope())
+        {
+            rb.AddForce(GetMoveDirectionOnSlope(moveDir) * currentMoveSpeed, ForceMode.Force);
+        }
+
         float speedMultiplier = !isGrounded ? airSpeedMultiplier : 1;
         rb.AddForce(moveDir.normalized * currentMoveSpeed * speedMultiplier, ForceMode.Force);
     }
@@ -130,7 +139,7 @@ public class GroundMovement : MonoBehaviourPunCallbacks
 
     private void CheckForGround()
     {
-        isGrounded = Physics.Raycast(groundDetectionPoint.position, Vector3.down, raycastLength, whatIsGround);
+        isGrounded = Physics.Raycast(groundDetectionPoint.position, Vector3.down, groundDetectionRaycastLength, whatIsGround);
 
         if(isGrounded)
         {
@@ -144,6 +153,12 @@ public class GroundMovement : MonoBehaviourPunCallbacks
 
     private void LimitSpeed()
     {
+        if(IsOnSlope() && rb.velocity.magnitude > currentMaxSpeed)
+        {
+            rb.velocity = rb.velocity.normalized * currentMaxSpeed;
+            return;
+        }
+
         Vector3 flatVel = new Vector3(rb.velocity.x, 0, rb.velocity.z);
 
         if(flatVel.magnitude > currentMaxSpeed)
@@ -231,26 +246,21 @@ public class GroundMovement : MonoBehaviourPunCallbacks
         xRotation += e.rotationDelta.x;
     }
 
-    /*
-    private void HandleJump()
+    private bool IsOnSlope()
     {
-        if (!grounded)
+        if(Physics.Raycast(groundDetectionPoint.transform.position, Vector3.down, out slopeHit, groundDetectionRaycastLength))
         {
-            return;
+            float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+            return angle < maxSlopeAngle && angle != 0;
         }
 
-        if (timeSinceLastJump < minTimeSinceLastJump)
-        {
-            timeSinceLastJump += Time.deltaTime;
-            return;
-        }
-
-        if (playerActions.Player.AscendDescend.ReadValue<float>() > 0)
-        {
-            rb.AddForce(-gravityDirection * jumpForce * 10f, ForceMode.Force);
-        }
+        return false;
     }
-    */
+
+    private Vector3 GetMoveDirectionOnSlope(Vector3 moveDirection)
+    {
+        return Vector3.ProjectOnPlane(moveDirection, slopeHit.normal).normalized;
+    }
 
     public override void OnEnable()
     {

@@ -586,10 +586,11 @@ MonoBehaviour:
   crouchScaleSpeed: 2
   crouchYScale: 0.6
   groundDetectionPoint: {fileID: 2624430271219858638}
-  raycastLength: 0.1
+  groundDetectionRaycastLength: 0.1
   whatIsGround:
     serializedVersion: 2
     m_Bits: 4294967295
+  maxSlopeAngle: 40
   xSensitivity: 15
   ySensitivity: 20
   cameraHolder: {fileID: 4523804345741600148}
