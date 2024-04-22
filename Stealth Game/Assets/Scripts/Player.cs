@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
     public float groundDistanceCheck;
 
     [Header("Gravity")]
+    public Rigidbody rb;
     public Vector3 gravityDirection;
     public float gravityForce;
 
@@ -28,6 +29,11 @@ public class Player : MonoBehaviour
         HandleMovements();
     }
 
+    private void FixedUpdate()
+    {
+        HandleGravity();
+    }
+
     private void HandleMovements()
     {
         if(InGravity())
@@ -39,6 +45,14 @@ public class Player : MonoBehaviour
         {
             groundMovement.enabled = false;
             zeroGMovement.enabled = true;
+        }
+    }
+
+    private void HandleGravity()
+    {
+        if(InGravity())
+        {
+            rb.AddForce(gravityDirection * gravityForce, ForceMode.Acceleration);
         }
     }
 

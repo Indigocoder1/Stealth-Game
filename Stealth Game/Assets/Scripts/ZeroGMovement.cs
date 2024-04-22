@@ -1,7 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.Tilemaps;
-using Unity.Collections;
 using Photon.Pun;
 
 public class ZeroGMovement : MonoBehaviourPunCallbacks
@@ -15,7 +12,6 @@ public class ZeroGMovement : MonoBehaviourPunCallbacks
     [Header("Camera Movement")]
     public float xSensitivity;
     public float ySensitivity;
-    public float cameraSmoothSpeed;
     public float tiltSpeed;
     public Transform cameraHolder;
 
@@ -46,7 +42,7 @@ public class ZeroGMovement : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        if (photonView && !photonView.IsMine)  //Code below doesn't execute if this screen isn't the active screen.
+        if (photonView && !photonView.IsMine)  //Code below doesn't execute if this the script this is executing on isn't controlled by the player.
         {
             return;
         }
