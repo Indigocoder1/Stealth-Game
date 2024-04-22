@@ -1,6 +1,5 @@
 using UnityEngine;
 using Photon.Pun;
-using static UnityEditor.Rendering.ShadowCascadeGUI;
 
 public class GroundMovement : MonoBehaviourPunCallbacks
 {
@@ -21,8 +20,10 @@ public class GroundMovement : MonoBehaviourPunCallbacks
     [Header("Jumping")]
     public float jumpForce;
     public float jumpCooldown;
+    public float coyoteTime;
 
     private bool readyToJump;
+    private bool isCoyoteTimeAvailable;
 
     [Header("Crouching")]
     public GameObject playerModel;
@@ -139,6 +140,7 @@ public class GroundMovement : MonoBehaviourPunCallbacks
 
     private void CheckForGround()
     {
+        bool wasGrounded = isGrounded;
         isGrounded = Physics.Raycast(groundDetectionPoint.position, Vector3.down, groundDetectionRaycastLength, whatIsGround);
 
         if(isGrounded)
@@ -148,6 +150,12 @@ public class GroundMovement : MonoBehaviourPunCallbacks
         else
         {
             rb.drag = 0;
+        }
+
+        if(!isCoyoteTimeAvailable && wasGrounded != isGrounded && wasGrounded)
+        {
+            isCoyoteTimeAvailable = true;
+            Invoke(nameof(ResetCoyoteTime), coyoteTime);
         }
     }
 
@@ -170,9 +178,10 @@ public class GroundMovement : MonoBehaviourPunCallbacks
 
     private void TryJump()
     {
-        if (playerActions.Player.Jump.IsPressed() && readyToJump && isGrounded)
+        if (playerActions.Player.Jump.IsPressed() && ((readyToJump && isGrounded) || isCoyoteTimeAvailable))
         {
             readyToJump = false;
+            isCoyoteTimeAvailable = false;
 
             Jump();
             Invoke(nameof(ResetAllowedToJump), jumpCooldown);
@@ -188,6 +197,10 @@ public class GroundMovement : MonoBehaviourPunCallbacks
     private void ResetAllowedToJump()
     {
         readyToJump = true;
+    }
+    private void ResetCoyoteTime()
+    {
+        isCoyoteTimeAvailable = false;
     }
 
     private void HandleState()

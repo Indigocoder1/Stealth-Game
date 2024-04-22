@@ -574,13 +574,14 @@ MonoBehaviour:
   walkSpeed: 4000
   sprintSpeed: 6000
   crouchSpeed: 2000
-  maxWalkSpeed: 10
+  maxWalkSpeed: 8
   maxSprintSpeed: 15
   maxCrouchSpeed: 5
   groundDrag: 2
   airSpeedMultiplier: 0.075
   jumpForce: 750
   jumpCooldown: 0.25
+  coyoteTime: 0.2
   playerModel: {fileID: 4697757610307401280}
   playerCollider: {fileID: 1256814068114766941}
   crouchScaleSpeed: 2
