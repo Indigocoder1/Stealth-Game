@@ -582,16 +582,24 @@ MonoBehaviour:
   jumpForce: 750
   jumpCooldown: 0.25
   coyoteTime: 0.2
+  maxJumpAngle: 35
   playerModel: {fileID: 4697757610307401280}
   playerCollider: {fileID: 1256814068114766941}
   crouchScaleSpeed: 2
   crouchYScale: 0.6
   groundDetectionPoint: {fileID: 2624430271219858638}
-  groundDetectionRaycastLength: 0.1
+  groundDetectionRaycastLength: 0.35
   whatIsGround:
     serializedVersion: 2
     m_Bits: 4294967295
   maxSlopeAngle: 40
+  stairHandler: {fileID: 8184867607028798677}
+  stairClimbThreshold: 0.5
+  pushUpForceMultiplier: 8
+  pushForwardForce: 4
+  pushDownForce: 200
+  minSnapDistance: 0.2
+  maxSnapDepth: 2
   xSensitivity: 15
   ySensitivity: 20
   cameraHolder: {fileID: 4523804345741600148}
@@ -641,6 +649,74 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
+--- !u!1 &4366771931992077789
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3852068903707645368}
+  - component: {fileID: 1154689513365328306}
+  - component: {fileID: 8184867607028798677}
+  m_Layer: 2
+  m_Name: StairDetection
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3852068903707645368
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4366771931992077789}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.534, z: 0.359}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8967107150915189918}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &1154689513365328306
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4366771931992077789}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.4
+  m_Height: 1
+  m_Direction: 0
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8184867607028798677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4366771931992077789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a84fc3e5404e83e4bb30b5b6883cb8f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4697757610307401280
 GameObject:
   m_ObjectHideFlags: 0
@@ -674,6 +750,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2624430271219858638}
+  - {fileID: 8967107150915189918}
   m_Father: {fileID: 7555116709310699549}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &146076695825836797
@@ -749,6 +826,56 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &5683870680071444947
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8967107150915189918}
+  - component: {fileID: 284496130702330720}
+  m_Layer: 0
+  m_Name: StairHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8967107150915189918
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5683870680071444947}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3852068903707645368}
+  m_Father: {fileID: 288776461032758900}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &284496130702330720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5683870680071444947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7c113df6ad79164d89171e1a3e30f99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transformToCopy: {fileID: 4523804345741600148}
+  localRotation: 1
+  rotateX: 0
+  rotateY: 1
+  rotateZ: 0
 --- !u!1 &5823807738699465685
 GameObject:
   m_ObjectHideFlags: 0

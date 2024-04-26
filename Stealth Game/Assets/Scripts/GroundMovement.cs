@@ -1,5 +1,6 @@
 using UnityEngine;
 using Photon.Pun;
+using UnityEditor.ShaderGraph;
 
 public class GroundMovement : MonoBehaviourPunCallbacks
 {
@@ -13,6 +14,8 @@ public class GroundMovement : MonoBehaviourPunCallbacks
     public float groundDrag;
     public float airSpeedMultiplier;
 
+    private Vector3 lastVelocity;
+    private Vector3 lastMoveDir;
     private float currentMoveSpeed;
     private float currentMaxSpeed;
     private bool isSprinting;
@@ -21,6 +24,7 @@ public class GroundMovement : MonoBehaviourPunCallbacks
     public float jumpForce;
     public float jumpCooldown;
     public float coyoteTime;
+    [Range(0, 90)] public float maxJumpAngle;
 
     private bool readyToJump;
     private bool isCoyoteTimeAvailable;
@@ -42,10 +46,20 @@ public class GroundMovement : MonoBehaviourPunCallbacks
     public LayerMask whatIsGround;
 
     private bool isGrounded;
+    private RaycastHit groundHit;
 
     [Header("Slope Handling")]
     public float maxSlopeAngle;
     private RaycastHit slopeHit;
+
+    [Header("Stair Handling")]
+    public StairHandler stairHandler;
+    [Range(-1, 1)] public float stairClimbThreshold;
+    public float pushUpForceMultiplier;
+    public float pushForwardForce;
+    public float pushDownForce;
+    public float minSnapDistance;
+    public float maxSnapDepth;
 
     [Header("Camera Movement")]
     public float xSensitivity;
@@ -84,6 +98,8 @@ public class GroundMovement : MonoBehaviourPunCallbacks
         startCapsuleYScale = playerCollider.height;
         startCameraYPos = cameraHolder.localPosition.y;
 
+        stairHandler.OnStairTrigger += HandleStairColHit;
+
         recoilManager.OnRotationDeltaCalculated += RecoilManager_OnRotationDeltaCalculated;
         playerActions.Player.Sprint.performed += _ =>
         {
@@ -117,13 +133,16 @@ public class GroundMovement : MonoBehaviourPunCallbacks
         Vector3 moveDir = cameraHolder.forward * direction.y + cameraHolder.right * direction.x;
         moveDir.y = 0;
 
-        if(IsOnSlope())
+        if (IsOnSlope())
         {
             rb.AddForce(GetMoveDirectionOnSlope(moveDir) * currentMoveSpeed, ForceMode.Force);
         }
 
         float speedMultiplier = !isGrounded ? airSpeedMultiplier : 1;
         rb.AddForce(moveDir.normalized * currentMoveSpeed * speedMultiplier, ForceMode.Force);
+        lastVelocity = rb.velocity;
+
+        lastMoveDir = moveDir;
     }
 
     private void Look(Vector2 delta)
@@ -141,7 +160,7 @@ public class GroundMovement : MonoBehaviourPunCallbacks
     private void CheckForGround()
     {
         bool wasGrounded = isGrounded;
-        isGrounded = Physics.Raycast(groundDetectionPoint.position, Vector3.down, groundDetectionRaycastLength, whatIsGround);
+        isGrounded = Physics.Raycast(groundDetectionPoint.position, Vector3.down, out groundHit, groundDetectionRaycastLength, whatIsGround);
 
         if(isGrounded)
         {
@@ -178,6 +197,9 @@ public class GroundMovement : MonoBehaviourPunCallbacks
 
     private void TryJump()
     {
+        float angle = Vector3.Angle(Vector3.up, groundHit.normal);
+        if (angle > maxJumpAngle) return;
+
         if (playerActions.Player.Jump.IsPressed() && ((readyToJump && isGrounded) || isCoyoteTimeAvailable))
         {
             readyToJump = false;
@@ -253,8 +275,28 @@ public class GroundMovement : MonoBehaviourPunCallbacks
         }
     }
 
+    private void HandleStairColHit(object sender, StairHandlerEventArgs args)
+    {
+        Vector3 distToPoint = args.closestPointFromHitCol - groundDetectionPoint.position;
+        float dot = Vector3.Dot(lastMoveDir, cameraHolder.forward);
+
+        if (dot < stairClimbThreshold) return;
+        if (distToPoint.y < minSnapDistance) return;
+        if (Physics.Raycast(stairHandler.transform.position, stairHandler.transform.forward, out RaycastHit hit))
+        {
+            if (hit.distance > maxSnapDepth) return;
+        }
+
+        rb.AddForce(Vector3.up * distToPoint.y * pushUpForceMultiplier, ForceMode.VelocityChange);
+        rb.velocity = lastVelocity;
+
+        rb.AddForce(lastMoveDir.normalized * pushForwardForce, ForceMode.VelocityChange);
+        rb.AddForce(Vector3.down * pushDownForce, ForceMode.Impulse);
+    }
+
     private void RecoilManager_OnRotationDeltaCalculated(object sender, RecoilManagerEventArgs e)
     {
+        //So the recoil and camera rotation don't get out of sync
         yRotation -= e.rotationDelta.y;
         xRotation += e.rotationDelta.x;
     }
